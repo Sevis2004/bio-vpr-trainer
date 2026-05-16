@@ -196,12 +196,102 @@
         color: var(--text);
       }
 
-      .task-group-intro img {
-        max-width: min(100%, 520px);
+      .task-group-intro img,
+      .task-media img,
+      .task-group-media img {
+        display: block;
+        max-width: 100%;
         height: auto;
         border: 1px solid var(--border);
         border-radius: 16px;
         background: #fff;
+      }
+
+      .text-center {
+        text-align: center;
+      }
+
+      .task-media,
+      .task-group-media {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+
+      .media-figure {
+        width: fit-content;
+        max-width: 100%;
+        margin: 0;
+      }
+
+      .media-figure figcaption,
+      .media-group-caption {
+        margin-top: 8px;
+        color: var(--muted);
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .media-group-caption {
+        flex-basis: 100%;
+      }
+
+      .dropdown-item .media-figure {
+        margin-bottom: 10px;
+      }
+
+      .media-align-center {
+        margin-right: auto;
+        margin-left: auto;
+      }
+
+      .media-align-right {
+        margin-left: auto;
+      }
+
+      .media-align-left {
+        margin-right: auto;
+      }
+
+      .media-small {
+        width: min(42%, 420px);
+      }
+
+      .media-medium {
+        width: min(62%, 640px);
+      }
+
+      .media-large {
+        width: min(100%, 940px);
+      }
+
+      .media-layout-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      .media-layout-row .media-figure {
+        flex: 0 1 var(--media-row-item-width, 260px);
+      }
+
+      .media-layout-tissueSet {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: flex-start;
+        justify-content: center;
+      }
+
+      .media-layout-tissueSet .media-figure:first-child {
+        flex-basis: 100%;
+      }
+
+      .media-layout-tissueSet .media-figure:not(:first-child) {
+        flex: 1 1 120px;
+        max-width: 160px;
       }
 
       .task-part {
@@ -217,6 +307,10 @@
       .task-part h3 {
         margin: 0 0 10px;
         font-size: 1.08rem;
+      }
+
+      .task-part h3:empty {
+        display: none;
       }
 
       .task-description {
@@ -256,6 +350,26 @@
         gap: 14px;
       }
 
+      .task-intro-media-layout,
+      .task-media-body-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(180px, 0.6fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .task-media-body-layout {
+        grid-template-columns: minmax(180px, 0.45fr) minmax(0, 1fr);
+      }
+
+      .task-media-side {
+        margin-bottom: 0;
+      }
+
+      .task-media-body-content .dropdown-grid {
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      }
+
       .dropdown-item {
         padding: 14px;
         border: 1px solid var(--border);
@@ -271,6 +385,19 @@
       .dnd-board {
         display: grid;
         gap: 16px;
+      }
+
+      .image-dnd-layout {
+        grid-template-columns: minmax(220px, 1fr) minmax(160px, 0.45fr);
+        align-items: start;
+      }
+
+      .image-dnd-layout .dnd-controls {
+        grid-column: 1 / -1;
+      }
+
+      .image-dnd-layout .dnd-slots {
+        grid-template-columns: 1fr;
       }
 
       .dnd-bank,
@@ -336,6 +463,10 @@
         color: var(--muted);
         font-size: 0.92rem;
         font-weight: 800;
+      }
+
+      .slot-label:empty {
+        display: none;
       }
 
       .actions {
@@ -489,6 +620,17 @@
 
         .btn {
           flex: 1 1 160px;
+        }
+
+        .media-small,
+        .media-medium {
+          width: min(100%, 520px);
+        }
+
+        .task-intro-media-layout,
+        .task-media-body-layout,
+        .image-dnd-layout {
+          grid-template-columns: 1fr;
         }
       }
     </style>
