@@ -433,7 +433,7 @@ function renderMediaMarkup(media) {
 
 function renderDragToSlots(task, body, onChange) {
   const board = document.createElement('div');
-  board.className = `dnd-board${task.layout === 'imageDnd' ? ' image-dnd-layout' : ''}`;
+  board.className = `dnd-board${task.layout === 'imageDnd' ? ' image-dnd-layout plant-label-layout' : ''}`;
 
   if (task.layout === 'imageDnd') {
     const imageColumn = document.createElement('div');
