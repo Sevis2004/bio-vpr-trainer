@@ -1,0 +1,302 @@
+{
+  "id": "bio6_demo_2026",
+  "title": "Биология 6 класс. Демо-вариант 2026",
+  "subject": "Биология",
+  "grade": 6,
+  "maxScore": 42,
+  "gradeScale": [
+    { "min": 0, "max": 10, "mark": 2 },
+    { "min": 11, "max": 22, "mark": 3 },
+    { "min": 23, "max": 34, "mark": 4 },
+    { "min": 35, "max": 42, "mark": 5 }
+  ],
+  "tasks": [
+    {
+      "id": "task_01",
+      "type": "singleChoice",
+      "title": "Орган растения",
+      "description": "Какой орган растения обычно поглощает воду и минеральные вещества из почвы?",
+      "maxScore": 2,
+      "options": [
+        { "id": "leaf", "label": "Лист" },
+        { "id": "root", "label": "Корень" },
+        { "id": "flower", "label": "Цветок" },
+        { "id": "fruit", "label": "Плод" }
+      ],
+      "answer": "root"
+    },
+    {
+      "id": "task_02",
+      "type": "singleChoice",
+      "title": "Фотосинтез",
+      "description": "Какой газ растение поглощает при фотосинтезе?",
+      "maxScore": 2,
+      "options": [
+        { "id": "oxygen", "label": "Кислород" },
+        { "id": "nitrogen", "label": "Азот" },
+        { "id": "carbon_dioxide", "label": "Углекислый газ" },
+        { "id": "hydrogen", "label": "Водород" }
+      ],
+      "answer": "carbon_dioxide"
+    },
+    {
+      "id": "task_03",
+      "type": "singleChoice",
+      "title": "Клеточная структура",
+      "description": "Какая структура управляет жизнедеятельностью клетки и хранит наследственную информацию?",
+      "maxScore": 2,
+      "options": [
+        { "id": "nucleus", "label": "Ядро" },
+        { "id": "vacuole", "label": "Вакуоль" },
+        { "id": "cell_wall", "label": "Клеточная стенка" },
+        { "id": "cytoplasm", "label": "Цитоплазма" }
+      ],
+      "answer": "nucleus"
+    },
+    {
+      "id": "task_04",
+      "type": "singleChoice",
+      "title": "Условия прорастания",
+      "description": "Что обязательно необходимо семени для прорастания?",
+      "maxScore": 2,
+      "options": [
+        { "id": "water", "label": "Вода" },
+        { "id": "fruit", "label": "Наличие плода" },
+        { "id": "bee", "label": "Опыление пчёлами" },
+        { "id": "soil_animals", "label": "Почвенные животные" }
+      ],
+      "answer": "water"
+    },
+    {
+      "id": "task_05",
+      "type": "singleChoice",
+      "title": "Группа организмов",
+      "description": "К какой группе относят дрожжи?",
+      "maxScore": 2,
+      "options": [
+        { "id": "plants", "label": "Растения" },
+        { "id": "fungi", "label": "Грибы" },
+        { "id": "animals", "label": "Животные" },
+        { "id": "algae", "label": "Водоросли" }
+      ],
+      "answer": "fungi"
+    },
+    {
+      "id": "task_06",
+      "type": "singleChoice",
+      "title": "Ткань растения",
+      "description": "Какая ткань обеспечивает рост растения в длину?",
+      "maxScore": 2,
+      "options": [
+        { "id": "cover", "label": "Покровная" },
+        { "id": "conductive", "label": "Проводящая" },
+        { "id": "educational", "label": "Образовательная" },
+        { "id": "storage", "label": "Запасающая" }
+      ],
+      "answer": "educational"
+    },
+    {
+      "id": "task_07",
+      "type": "singleChoice",
+      "title": "Плод",
+      "description": "Какой пример относится к сочным плодам?",
+      "maxScore": 2,
+      "options": [
+        { "id": "wheat", "label": "Зерновка пшеницы" },
+        { "id": "pea", "label": "Боб гороха" },
+        { "id": "tomato", "label": "Ягода томата" },
+        { "id": "sunflower", "label": "Семянка подсолнечника" }
+      ],
+      "answer": "tomato"
+    },
+    {
+      "id": "task_08",
+      "type": "singleChoice",
+      "title": "Среда обитания",
+      "description": "Где обитают водоросли чаще всего?",
+      "maxScore": 2,
+      "options": [
+        { "id": "water", "label": "В водной среде или во влажных местах" },
+        { "id": "desert", "label": "Только в пустынях" },
+        { "id": "deep_soil", "label": "Только глубоко в почве" },
+        { "id": "animal_body", "label": "Только внутри тела животных" }
+      ],
+      "answer": "water"
+    },
+    {
+      "id": "task_09",
+      "type": "singleChoice",
+      "title": "Размножение",
+      "description": "Как называется перенос пыльцы с тычинок на рыльце пестика?",
+      "maxScore": 2,
+      "options": [
+        { "id": "pollination", "label": "Опыление" },
+        { "id": "germination", "label": "Прорастание" },
+        { "id": "evaporation", "label": "Испарение" },
+        { "id": "nutrition", "label": "Питание" }
+      ],
+      "answer": "pollination"
+    },
+    {
+      "id": "task_10",
+      "type": "singleChoice",
+      "title": "Мхи",
+      "description": "Какая особенность характерна для мхов?",
+      "maxScore": 2,
+      "options": [
+        { "id": "flowers", "label": "Имеют цветки и плоды" },
+        { "id": "spores", "label": "Размножаются спорами" },
+        { "id": "seeds", "label": "Образуют семена в шишках" },
+        { "id": "no_cells", "label": "Не имеют клеточного строения" }
+      ],
+      "answer": "spores"
+    },
+    {
+      "id": "task_11",
+      "type": "multipleChoice",
+      "title": "Признаки живых организмов",
+      "description": "Выберите все признаки живых организмов.",
+      "maxScore": 3,
+      "options": [
+        { "id": "growth", "label": "Рост и развитие" },
+        { "id": "nutrition", "label": "Питание" },
+        { "id": "crystal", "label": "Образование кристаллов" },
+        { "id": "reproduction", "label": "Размножение" },
+        { "id": "magnetism", "label": "Притяжение магнитом" }
+      ],
+      "answer": ["growth", "nutrition", "reproduction"]
+    },
+    {
+      "id": "task_12",
+      "type": "multipleChoice",
+      "title": "Части цветка",
+      "description": "Выберите части цветка покрытосеменного растения.",
+      "maxScore": 3,
+      "options": [
+        { "id": "pistil", "label": "Пестик" },
+        { "id": "stamen", "label": "Тычинка" },
+        { "id": "petal", "label": "Лепесток" },
+        { "id": "root_hair", "label": "Корневой волосок" },
+        { "id": "mycelium", "label": "Грибница" }
+      ],
+      "answer": ["pistil", "stamen", "petal"]
+    },
+    {
+      "id": "task_13",
+      "type": "multipleChoice",
+      "title": "Органы цветкового растения",
+      "description": "Выберите вегетативные органы растения.",
+      "maxScore": 3,
+      "options": [
+        { "id": "root", "label": "Корень" },
+        { "id": "stem", "label": "Стебель" },
+        { "id": "leaf", "label": "Лист" },
+        { "id": "seed", "label": "Семя" },
+        { "id": "fruit", "label": "Плод" }
+      ],
+      "answer": ["root", "stem", "leaf"]
+    },
+    {
+      "id": "task_14",
+      "type": "dropdownGroup",
+      "title": "Соответствие: орган и функция",
+      "description": "Для каждого органа выберите основную функцию.",
+      "maxScore": 3,
+      "partialScore": 1,
+      "items": [
+        {
+          "id": "a",
+          "label": "А. Корень",
+          "options": [
+            { "id": "absorb", "label": "Поглощает воду и минеральные вещества" },
+            { "id": "photosynthesis", "label": "Образует органические вещества на свету" },
+            { "id": "seed_protection", "label": "Защищает семена" }
+          ]
+        },
+        {
+          "id": "b",
+          "label": "Б. Лист",
+          "options": [
+            { "id": "absorb", "label": "Поглощает воду и минеральные вещества" },
+            { "id": "photosynthesis", "label": "Образует органические вещества на свету" },
+            { "id": "seed_protection", "label": "Защищает семена" }
+          ]
+        },
+        {
+          "id": "c",
+          "label": "В. Плод",
+          "options": [
+            { "id": "absorb", "label": "Поглощает воду и минеральные вещества" },
+            { "id": "photosynthesis", "label": "Образует органические вещества на свету" },
+            { "id": "seed_protection", "label": "Защищает семена" }
+          ]
+        }
+      ],
+      "answer": { "a": "absorb", "b": "photosynthesis", "c": "seed_protection" }
+    },
+    {
+      "id": "task_15",
+      "type": "dropdownGroup",
+      "title": "Группы растений",
+      "description": "Подберите признак для каждой группы растений.",
+      "maxScore": 3,
+      "partialScore": 1,
+      "items": [
+        {
+          "id": "a",
+          "label": "А. Папоротники",
+          "options": [
+            { "id": "spores", "label": "Размножаются спорами" },
+            { "id": "cones", "label": "Образуют семена в шишках" },
+            { "id": "flowers", "label": "Имеют цветки и плоды" }
+          ]
+        },
+        {
+          "id": "b",
+          "label": "Б. Голосеменные",
+          "options": [
+            { "id": "spores", "label": "Размножаются спорами" },
+            { "id": "cones", "label": "Образуют семена в шишках" },
+            { "id": "flowers", "label": "Имеют цветки и плоды" }
+          ]
+        },
+        {
+          "id": "c",
+          "label": "В. Покрытосеменные",
+          "options": [
+            { "id": "spores", "label": "Размножаются спорами" },
+            { "id": "cones", "label": "Образуют семена в шишках" },
+            { "id": "flowers", "label": "Имеют цветки и плоды" }
+          ]
+        }
+      ],
+      "answer": { "a": "spores", "b": "cones", "c": "flowers" }
+    },
+    {
+      "id": "task_16",
+      "type": "dragToSlots",
+      "title": "Распределение организмов по группам",
+      "description": "Переместите каждую карточку в подходящий слот.",
+      "maxScore": 7,
+      "cards": [
+        { "id": "moss", "label": "Кукушкин лён" },
+        { "id": "fern", "label": "Орляк" },
+        { "id": "pine", "label": "Сосна" },
+        { "id": "apple", "label": "Яблоня" }
+      ],
+      "slots": [
+        { "id": "slot_moss", "label": "Мох" },
+        { "id": "slot_fern", "label": "Папоротник" },
+        { "id": "slot_gymnosperm", "label": "Голосеменное" },
+        { "id": "slot_angiosperm", "label": "Покрытосеменное" }
+      ],
+      "answer": {
+        "slot_moss": "moss",
+        "slot_fern": "fern",
+        "slot_gymnosperm": "pine",
+        "slot_angiosperm": "apple"
+      },
+      "scoreMap": { "0": 0, "1": 1, "2": 3, "3": 5, "4": 7 }
+    }
+  ]
+}
