@@ -4,17 +4,17 @@ export function renderVariant(variant, container, onChange) {
   container.innerHTML = '';
   const fragment = document.createDocumentFragment();
 
-  variant.tasks.forEach((task) => {
+  variant.tasks.forEach((task, index) => {
     const card = document.createElement('article');
     card.className = 'task-card';
     card.dataset.taskId = task.id;
     card.dataset.taskType = task.type;
     card.innerHTML = `
       <div class="task-head">
-        <div class="task-number">Задание ${escapeHtml(task.taskNo ?? task.id)}${task.partNo ? ` · ${escapeHtml(task.partNo)}` : ''}</div>
+        <div class="task-number">Задание ${index + 1}</div>
         <div class="task-points">${task.maxScore} ${formatPoints(task.maxScore)}</div>
       </div>
-      <h2>${escapeHtml(task.displayTitle ?? task.title)}</h2>
+      <h2>${escapeHtml(task.title)}</h2>
       ${task.description ? `<p class="task-description">${escapeHtml(task.description)}</p>` : ''}
       <div class="task-body"></div>
     `;
@@ -38,18 +38,7 @@ export function readAnswers(variant, container) {
 
 export function countAnsweredTasks(variant, container) {
   const answers = readAnswers(variant, container);
-  const grouped = new Map();
-
-  variant.tasks.forEach((task) => {
-    const taskNo = task.taskNo ?? task.id;
-    const group = grouped.get(taskNo) ?? [];
-    group.push(task);
-    grouped.set(taskNo, group);
-  });
-
-  return Array.from(grouped.values()).filter((tasks) => {
-    return tasks.every((task) => isAnswered(task, answers[task.id]));
-  }).length;
+  return variant.tasks.filter((task) => isAnswered(task, answers[task.id])).length;
 }
 
 export function applyResults(container, result) {
@@ -76,6 +65,9 @@ export function clearResults(container) {
     });
     card.querySelectorAll('.is-right-answer').forEach((element) => {
       element.classList.remove('is-right-answer');
+    });
+    card.querySelectorAll('.correct-answer-summary, .answer-badge').forEach((element) => {
+      element.remove();
     });
   });
 }
@@ -152,6 +144,7 @@ function renderDropdownGroup(task, body, onChange) {
     wrapper.dataset.itemId = item.id;
     wrapper.innerHTML = `
       <strong>${escapeHtml(item.label)}</strong>
+      ${item.strictHint ? `<p class="task-description">${escapeHtml(item.strictHint)}</p>` : ''}
       <select class="task-select" name="${escapeAttribute(item.id)}">
         <option value="">${escapeHtml(getPlaceholder(task))}</option>
         ${getDropdownOptions(task, item)
@@ -243,6 +236,10 @@ function isAnswered(task, answer) {
 function markCorrectAnswers(card, taskResult) {
   const correctAnswer = taskResult.correctAnswer;
 
+  if (['singleChoice', 'multipleChoice', 'dropdown', 'dropdownGroup'].includes(card.dataset.taskType)) {
+    appendCorrectAnswerSummary(card, taskResult.correctAnswerText);
+  }
+
   if (card.dataset.taskType === 'singleChoice' || card.dataset.taskType === 'multipleChoice') {
     const answerIds = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
     answerIds.forEach((id) => {
@@ -253,8 +250,8 @@ function markCorrectAnswers(card, taskResult) {
 
   if (card.dataset.taskType === 'dropdown') {
     const select = card.querySelector('select');
-    const optionText = taskResult.correctDisplay ?? select?.querySelector(`option[value="${CSS.escape(correctAnswer)}"]`)?.textContent ?? correctAnswer;
-    select?.closest('.dropdown-item')?.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(optionText)}</div>`);
+    const optionText = getSelectedOptionText(select, correctAnswer);
+    select?.closest('.dropdown-item')?.insertAdjacentHTML('beforeend', `<div class="badge ok answer-badge">Верно: ${escapeHtml(optionText)}</div>`);
     return;
   }
 
@@ -262,8 +259,8 @@ function markCorrectAnswers(card, taskResult) {
     Object.entries(correctAnswer).forEach(([itemId, optionId]) => {
       const item = card.querySelector(`[data-item-id="${CSS.escape(itemId)}"]`);
       const select = item?.querySelector('select');
-      const optionText = taskResult.correctDisplay ?? select?.querySelector(`option[value="${CSS.escape(optionId)}"]`)?.textContent ?? optionId;
-      item?.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(optionText)}</div>`);
+      const optionText = getSelectedOptionText(select, optionId);
+      item?.insertAdjacentHTML('beforeend', `<div class="badge ok answer-badge">Верно: ${escapeHtml(optionText)}</div>`);
     });
     return;
   }
@@ -271,9 +268,26 @@ function markCorrectAnswers(card, taskResult) {
   if (card.dataset.taskType === 'dragToSlots') {
     card.querySelectorAll('[data-dnd-slot]').forEach((slot) => {
       const expectedCard = correctAnswer[slot.dataset.slotId];
-      slot.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(expectedCard)}</div>`);
+      slot.insertAdjacentHTML('beforeend', `<div class="badge ok answer-badge">Верно: ${escapeHtml(expectedCard)}</div>`);
     });
   }
+}
+
+function appendCorrectAnswerSummary(card, correctAnswerText) {
+  if (!correctAnswerText) return;
+
+  const summary = document.createElement('div');
+  summary.className = 'correct-answer-summary';
+  summary.innerHTML = `<span class="badge ok">Правильный ответ: ${escapeHtml(correctAnswerText)}</span>`;
+  card.append(summary);
+}
+
+function getSelectedOptionText(select, answer) {
+  if (Array.isArray(answer)) {
+    return answer.map((id) => getSelectedOptionText(select, id)).join(' / ');
+  }
+
+  return select?.querySelector(`option[value="${CSS.escape(answer)}"]`)?.textContent ?? answer;
 }
 
 function renderStrictHint(task, body) {
