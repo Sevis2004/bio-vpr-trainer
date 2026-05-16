@@ -4,12 +4,13 @@ export function gradeVariant(variant, answers) {
     const result = gradeTask(task, userAnswer, answers);
 
     return {
-      number: index + 1,
+      number: task.partNo ?? task.taskNo ?? index + 1,
       taskId: task.id,
       title: task.title,
       maxScore: task.maxScore,
       userAnswer,
       correctAnswer: task.answer,
+      correctDisplay: task.correctDisplay,
       correctAnswerText: formatCorrectAnswer(task),
       ...result,
     };
@@ -144,7 +145,8 @@ export function gradeAllOrNothing(task, userAnswer = {}) {
 
 export function gradeDependentCriterion(task, userAnswer, allAnswers = {}) {
   const dependency = parseDependency(task.dependsOn);
-  const dependencyAnswer = dependency ? allAnswers?.[dependency.taskId]?.[dependency.itemId] : undefined;
+  const directDependencyAnswer = task.dependsOn ? allAnswers?.[task.dependsOn] : undefined;
+  const dependencyAnswer = directDependencyAnswer ?? (dependency ? allAnswers?.[dependency.taskId]?.[dependency.itemId] : undefined);
   const dependencyExpected = dependency ? task.dependsOnAnswer ?? task.dependencyAnswer : undefined;
   const dependencyCorrect = dependencyExpected !== undefined && dependencyAnswer === dependencyExpected;
   const answerCorrect = userAnswer === task.answer;
@@ -163,6 +165,8 @@ export function getMark(score, gradeScale = []) {
 }
 
 export function formatCorrectAnswer(task) {
+  if (task.correctDisplay) return task.correctDisplay;
+
   switch (task.type) {
     case 'singleChoice':
     case 'dropdown':
