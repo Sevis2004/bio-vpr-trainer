@@ -22,13 +22,21 @@ export function renderVariant(variant, container, onChange) {
       part.className = 'task-part';
       part.dataset.taskId = task.id;
       part.dataset.taskType = task.type;
-      part.innerHTML = `
-        <h3>${escapeHtml(task.title)}</h3>
-        ${task.description ? `<p class="task-description">${escapeHtml(task.description)}</p>` : ''}
-        <div class="task-body"></div>
-      `;
+      part.innerHTML = `<h3>${escapeHtml(task.title)}</h3>`;
 
-      const body = part.querySelector('.task-body');
+      renderMedia(task.media ?? task.image, part, 'task-media');
+
+      if (task.description) {
+        const description = document.createElement('p');
+        description.className = 'task-description';
+        description.style.whiteSpace = 'pre-line';
+        description.textContent = task.description;
+        part.append(description);
+      }
+
+      const body = document.createElement('div');
+      body.className = 'task-body';
+      part.append(body);
       renderTaskBody(task, body, onChange);
       card.append(part);
     });
@@ -121,25 +129,56 @@ function stripLeadingZeroes(value) {
 }
 
 function renderTaskGroupMeta(groupMeta, card) {
-  if (!groupMeta?.description && !groupMeta?.image) return;
+  if (!groupMeta?.description && !groupMeta?.image && !groupMeta?.media) return;
 
   const intro = document.createElement('div');
   intro.className = 'task-group-intro';
 
   if (groupMeta.description) {
     const description = document.createElement('p');
+    description.style.whiteSpace = 'pre-line';
     description.textContent = groupMeta.description;
     intro.append(description);
   }
 
-  if (groupMeta.image) {
-    const image = document.createElement('img');
-    image.src = groupMeta.image;
-    image.alt = groupMeta.imageAlt ?? '';
-    intro.append(image);
-  }
+  renderMedia(groupMeta.media ?? groupMeta.image, intro, 'task-group-media', groupMeta.imageAlt);
 
   card.append(intro);
+}
+
+function renderMedia(media, container, className, fallbackAlt = '') {
+  const mediaItems = normalizeMedia(media, fallbackAlt);
+  if (mediaItems.length === 0) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = className;
+
+  mediaItems.forEach((item) => {
+    const image = document.createElement('img');
+    image.src = item.src;
+    image.alt = item.alt ?? '';
+    image.loading = 'lazy';
+    image.style.maxWidth = '100%';
+    image.style.height = 'auto';
+    image.addEventListener('error', () => {
+      image.hidden = true;
+    });
+    wrapper.append(image);
+  });
+
+  container.append(wrapper);
+}
+
+function normalizeMedia(media, fallbackAlt = '') {
+  if (!media) return [];
+  if (typeof media === 'string') {
+    return [{ src: media, alt: fallbackAlt }];
+  }
+  if (!Array.isArray(media)) return [];
+
+  return media
+    .map((item) => (typeof item === 'string' ? { src: item, alt: fallbackAlt } : item))
+    .filter((item) => item?.src);
 }
 
 function renderTaskBody(task, body, onChange) {
