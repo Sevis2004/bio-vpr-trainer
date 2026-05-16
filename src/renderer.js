@@ -12,7 +12,6 @@ export function renderVariant(variant, container, onChange) {
     card.innerHTML = `
       <div class="task-head">
         <div class="task-number">Задание ${escapeHtml(getDisplayTaskNumber(task))}</div>
-        <div class="task-points">${task.maxScore} ${formatPoints(task.maxScore)}</div>
       </div>
       <h2>${escapeHtml(task.title)}</h2>
       ${task.description ? `<p class="task-description">${escapeHtml(task.description)}</p>` : ''}
@@ -36,9 +35,13 @@ export function readAnswers(variant, container) {
   );
 }
 
-export function countAnsweredTasks(variant, container) {
+export function countCompletedTaskGroups(variant, container) {
   const answers = readAnswers(variant, container);
-  return variant.tasks.filter((task) => isAnswered(task, answers[task.id])).length;
+  return getTaskGroups(variant).filter((group) => group.every((task) => isAnswered(task, answers[task.id]))).length;
+}
+
+export function countTaskGroups(variant) {
+  return getTaskGroups(variant).length;
 }
 
 export function applyResults(container, result) {
@@ -70,6 +73,33 @@ export function clearResults(container) {
       element.remove();
     });
   });
+}
+
+function getTaskGroups(variant) {
+  const groupsByNumber = new Map();
+
+  variant.tasks.forEach((task) => {
+    const groupNumber = getTaskGroupNumber(task);
+    if (!groupsByNumber.has(groupNumber)) {
+      groupsByNumber.set(groupNumber, []);
+    }
+    groupsByNumber.get(groupNumber).push(task);
+  });
+
+  return [...groupsByNumber.values()];
+}
+
+function getTaskGroupNumber(task) {
+  if (task.taskNo !== undefined && task.taskNo !== null && String(task.taskNo).trim() !== '') {
+    return String(task.taskNo).trim();
+  }
+
+  const id = String(task.id ?? '').trim();
+  const leadingNumber = id.match(/^\d+/)?.[0];
+  if (leadingNumber) return stripLeadingZeroes(leadingNumber);
+
+  const embeddedNumber = id.match(/\d+/)?.[0];
+  return embeddedNumber ? stripLeadingZeroes(embeddedNumber) : id;
 }
 
 function getDisplayTaskNumber(task) {
@@ -280,7 +310,7 @@ function appendResultSummary(card, taskResult) {
 function renderResultBadge(taskResult) {
   const statusMap = {
     correct: ['ok', 'Верно'],
-    partial: ['partial', `Частично верно: ${taskResult.score} из ${taskResult.maxScore} ${formatPoints(taskResult.maxScore)}`],
+    partial: ['partial', 'Частично верно'],
     wrong: ['bad', 'Неверно'],
   };
   const [className, label] = statusMap[taskResult.status] ?? statusMap.wrong;
@@ -310,12 +340,6 @@ function statusClass(status) {
     partial: 'is-partial',
     wrong: 'is-wrong',
   }[status] ?? 'is-wrong';
-}
-
-function formatPoints(value) {
-  if (value === 1) return 'балл';
-  if (value >= 2 && value <= 4) return 'балла';
-  return 'баллов';
 }
 
 function escapeHtml(value) {
