@@ -4,188 +4,203 @@
   "subject": "Биология",
   "grade": 6,
   "maxScore": 42,
+  "tasksCount": 16,
   "gradeScale": [
     {
       "min": 0,
       "max": 10,
-      "mark": 2
+      "grade": 2
     },
     {
       "min": 11,
       "max": 22,
-      "mark": 3
+      "grade": 3
     },
     {
       "min": 23,
       "max": 34,
-      "mark": 4
+      "grade": 4
     },
     {
       "min": 35,
       "max": 42,
-      "mark": 5
+      "grade": 5
     }
   ],
   "tasks": [
     {
-      "id": "1.1",
-      "type": "dropdown",
-      "title": "1.1. Процесс размножения цветковых растений",
-      "description": "Выберите название процесса, при котором у цветковых растений образуется зародыш семени.",
-      "maxScore": 1,
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "options": [
+      "id": "1",
+      "title": "Задание 1",
+      "maxScore": 3,
+      "parts": [
         {
-          "id": "double_fertilization",
-          "label": "Двойное оплодотворение"
+          "id": "1.1",
+          "type": "dropdown",
+          "title": "1.1. Процесс размножения цветковых растений",
+          "description": "Выберите название процесса, при котором у цветковых растений образуется зародыш семени.",
+          "maxScore": 1,
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "options": [
+            {
+              "id": "double_fertilization",
+              "label": "Двойное оплодотворение"
+            },
+            {
+              "id": "pollination",
+              "label": "Опыление"
+            },
+            {
+              "id": "photosynthesis",
+              "label": "Фотосинтез"
+            },
+            {
+              "id": "germination",
+              "label": "Прорастание семени"
+            },
+            {
+              "id": "sporulation",
+              "label": "Спорообразование"
+            }
+          ],
+          "answer": "double_fertilization",
+          "scoring": "exact",
+          "image": "assets/bio6_variant_1/q01.png"
         },
         {
-          "id": "pollination",
-          "label": "Опыление"
+          "id": "1.2",
+          "type": "dropdown",
+          "title": "1.2. Биологическая наука",
+          "description": "Выберите раздел биологии, изучающий процессы жизнедеятельности организмов.",
+          "maxScore": 1,
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "options": [
+            {
+              "id": "physiology",
+              "label": "Физиология"
+            },
+            {
+              "id": "botany",
+              "label": "Ботаника"
+            },
+            {
+              "id": "ecology",
+              "label": "Экология"
+            },
+            {
+              "id": "taxonomy",
+              "label": "Систематика"
+            },
+            {
+              "id": "anatomy",
+              "label": "Анатомия"
+            }
+          ],
+          "answer": "physiology",
+          "scoring": "exact"
         },
         {
-          "id": "photosynthesis",
-          "label": "Фотосинтез"
-        },
-        {
-          "id": "germination",
-          "label": "Прорастание семени"
-        },
-        {
-          "id": "sporulation",
-          "label": "Спорообразование"
+          "id": "1.3",
+          "type": "dropdown",
+          "title": "1.3. Число клеток после деления",
+          "description": "Выберите, сколько дочерних клеток обычно образуется при делении одной клетки надвое.",
+          "maxScore": 1,
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "options": [
+            {
+              "id": "two",
+              "label": "Две"
+            },
+            {
+              "id": "one",
+              "label": "Одна"
+            },
+            {
+              "id": "three",
+              "label": "Три"
+            },
+            {
+              "id": "four",
+              "label": "Четыре"
+            },
+            {
+              "id": "many",
+              "label": "Много одинаковых клеток"
+            }
+          ],
+          "answer": "two",
+          "scoring": "exact"
         }
-      ],
-      "answer": "double_fertilization",
-      "scoring": "exact",
-      "image": "assets/bio6_variant_1/q01.png"
+      ]
     },
     {
-      "id": "1.2",
-      "type": "dropdown",
-      "title": "1.2. Биологическая наука",
-      "description": "Выберите раздел биологии, изучающий процессы жизнедеятельности организмов.",
-      "maxScore": 1,
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "options": [
+      "id": "2",
+      "title": "Задание 2",
+      "maxScore": 2,
+      "parts": [
         {
-          "id": "physiology",
-          "label": "Физиология"
+          "id": "2.1",
+          "type": "singleChoice",
+          "title": "2.1. Выбор признака на схеме",
+          "description": "Выберите вариант ответа, обозначенный цифрой 1.",
+          "maxScore": 1,
+          "options": [
+            {
+              "id": "1",
+              "label": "1"
+            },
+            {
+              "id": "2",
+              "label": "2"
+            },
+            {
+              "id": "3",
+              "label": "3"
+            },
+            {
+              "id": "4",
+              "label": "4"
+            }
+          ],
+          "answer": "1",
+          "scoring": "exact"
         },
         {
-          "id": "botany",
-          "label": "Ботаника"
-        },
-        {
-          "id": "ecology",
-          "label": "Экология"
-        },
-        {
-          "id": "taxonomy",
-          "label": "Систематика"
-        },
-        {
-          "id": "anatomy",
-          "label": "Анатомия"
+          "id": "2.2",
+          "type": "dropdown",
+          "title": "2.2. Функция проводящих тканей",
+          "description": "Выберите верное описание восходящего тока веществ в растении.",
+          "maxScore": 1,
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "options": [
+            {
+              "id": "water_mineral_transport",
+              "label": "Транспорт воды и минеральных веществ от корней к другим органам"
+            },
+            {
+              "id": "organic_transport",
+              "label": "Перемещение раствора сахаров от листьев к другим органам"
+            },
+            {
+              "id": "gas_exchange",
+              "label": "Газообмен через устьица листа"
+            },
+            {
+              "id": "seed_dispersal",
+              "label": "Распространение семян и плодов"
+            },
+            {
+              "id": "evaporation",
+              "label": "Испарение воды всей поверхностью корня"
+            }
+          ],
+          "answer": "water_mineral_transport",
+          "scoring": "exact"
         }
-      ],
-      "answer": "physiology",
-      "scoring": "exact"
-    },
-    {
-      "id": "1.3",
-      "type": "dropdown",
-      "title": "1.3. Число клеток после деления",
-      "description": "Выберите, сколько дочерних клеток обычно образуется при делении одной клетки надвое.",
-      "maxScore": 1,
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "options": [
-        {
-          "id": "two",
-          "label": "Две"
-        },
-        {
-          "id": "one",
-          "label": "Одна"
-        },
-        {
-          "id": "three",
-          "label": "Три"
-        },
-        {
-          "id": "four",
-          "label": "Четыре"
-        },
-        {
-          "id": "many",
-          "label": "Много одинаковых клеток"
-        }
-      ],
-      "answer": "two",
-      "scoring": "exact"
-    },
-    {
-      "id": "2.1",
-      "type": "singleChoice",
-      "title": "2.1. Выбор признака на схеме",
-      "description": "Выберите вариант ответа, обозначенный цифрой 1.",
-      "maxScore": 1,
-      "options": [
-        {
-          "id": "1",
-          "label": "1"
-        },
-        {
-          "id": "2",
-          "label": "2"
-        },
-        {
-          "id": "3",
-          "label": "3"
-        },
-        {
-          "id": "4",
-          "label": "4"
-        }
-      ],
-      "answer": "1",
-      "scoring": "exact"
-    },
-    {
-      "id": "2.2",
-      "type": "dropdown",
-      "title": "2.2. Функция проводящих тканей",
-      "description": "Выберите верное описание восходящего тока веществ в растении.",
-      "maxScore": 1,
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "options": [
-        {
-          "id": "water_mineral_transport",
-          "label": "Транспорт воды и минеральных веществ от корней к другим органам"
-        },
-        {
-          "id": "organic_transport",
-          "label": "Перемещение раствора сахаров от листьев к другим органам"
-        },
-        {
-          "id": "gas_exchange",
-          "label": "Газообмен через устьица листа"
-        },
-        {
-          "id": "seed_dispersal",
-          "label": "Распространение семян и плодов"
-        },
-        {
-          "id": "evaporation",
-          "label": "Испарение воды всей поверхностью корня"
-        }
-      ],
-      "answer": "water_mineral_transport",
-      "scoring": "exact"
+      ]
     },
     {
       "id": "3",
@@ -213,8 +228,6 @@
         "C": "5"
       },
       "scoring": "partialByErrors",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
       "options": [
         {
           "id": "1",
@@ -243,93 +256,101 @@
       ]
     },
     {
-      "id": "4.1",
-      "type": "dragToSlots",
-      "title": "4.1. Части побега",
-      "description": "Подпишите части побега, переместив карточки в подходящие слоты.",
-      "image": "assets/bio6_variant_1/q04.png",
-      "maxScore": 2,
-      "cards": [
+      "id": "4",
+      "title": "Задание 4",
+      "maxScore": 3,
+      "parts": [
         {
-          "id": "stem",
-          "label": "Стебель"
+          "id": "4.1",
+          "type": "dragToSlots",
+          "title": "4.1. Части побега",
+          "description": "Подпишите части побега, переместив карточки в подходящие слоты.",
+          "image": "assets/bio6_variant_1/q04.png",
+          "maxScore": 2,
+          "cards": [
+            {
+              "id": "stem",
+              "label": "Стебель"
+            },
+            {
+              "id": "apical_bud",
+              "label": "Верхушечная почка"
+            },
+            {
+              "id": "internode",
+              "label": "Междоузлие"
+            },
+            {
+              "id": "leaf",
+              "label": "Лист"
+            },
+            {
+              "id": "root",
+              "label": "Корень"
+            }
+          ],
+          "slots": [
+            {
+              "id": "stem_slot",
+              "label": "Стебель"
+            },
+            {
+              "id": "apical_bud_slot",
+              "label": "Верхушечная почка"
+            },
+            {
+              "id": "internode_slot",
+              "label": "Междоузлие"
+            }
+          ],
+          "answer": {
+            "stem_slot": "stem",
+            "apical_bud_slot": "apical_bud",
+            "internode_slot": "internode"
+          },
+          "scoring": "countCorrect",
+          "scoreMap": {
+            "0": 0,
+            "1": 0,
+            "2": 1,
+            "3": 2
+          }
         },
         {
-          "id": "apical_bud",
-          "label": "Верхушечная почка"
-        },
-        {
-          "id": "internode",
-          "label": "Междоузлие"
-        },
-        {
-          "id": "leaf",
-          "label": "Лист"
-        },
-        {
-          "id": "root",
-          "label": "Корень"
+          "id": "4.2",
+          "type": "dropdown",
+          "title": "4.2. Орган зародыша",
+          "description": "Выберите часть зародыша, из которой развивается побег.",
+          "maxScore": 1,
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "options": [
+            {
+              "id": "embryonic_bud",
+              "label": "Зародышевая почечка"
+            },
+            {
+              "id": "radicle",
+              "label": "Зародышевый корешок"
+            },
+            {
+              "id": "cotyledon",
+              "label": "Семядоля"
+            },
+            {
+              "id": "endosperm",
+              "label": "Эндосперм"
+            },
+            {
+              "id": "seed_coat",
+              "label": "Семенная кожура"
+            }
+          ],
+          "answer": "embryonic_bud",
+          "scoring": "exact",
+          "correctDisplay": "зародышевая почечка / почечка"
         }
-      ],
-      "slots": [
-        {
-          "id": "stem_slot",
-          "label": "Стебель"
-        },
-        {
-          "id": "apical_bud_slot",
-          "label": "Верхушечная почка"
-        },
-        {
-          "id": "internode_slot",
-          "label": "Междоузлие"
-        }
-      ],
-      "answer": {
-        "stem_slot": "stem",
-        "apical_bud_slot": "apical_bud",
-        "internode_slot": "internode"
-      },
-      "scoring": "countCorrect",
-      "scoreMap": {
-        "0": 0,
-        "1": 0,
-        "2": 1,
-        "3": 2
-      }
-    },
-    {
-      "id": "4.2",
-      "type": "dropdown",
-      "title": "4.2. Орган зародыша",
-      "description": "Выберите часть зародыша, из которой развивается побег.",
-      "maxScore": 1,
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "options": [
-        {
-          "id": "embryonic_bud",
-          "label": "Зародышевая почечка"
-        },
-        {
-          "id": "radicle",
-          "label": "Зародышевый корешок"
-        },
-        {
-          "id": "cotyledon",
-          "label": "Семядоля"
-        },
-        {
-          "id": "endosperm",
-          "label": "Эндосперм"
-        },
-        {
-          "id": "seed_coat",
-          "label": "Семенная кожура"
-        }
-      ],
-      "answer": "embryonic_bud",
-      "scoring": "exact"
+      ]
     },
     {
       "id": "5",
@@ -357,8 +378,6 @@
         "C": "2"
       },
       "scoring": "partialByErrors",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
       "options": [
         {
           "id": "1",
@@ -449,93 +468,100 @@
       }
     },
     {
-      "id": "7.1",
-      "type": "dropdownGroup",
-      "title": "7.1. Устьице и его функция",
-      "description": "Выберите название клеток устьица и функцию, которую они обеспечивают.",
-      "maxScore": 2,
-      "items": [
+      "id": "7",
+      "title": "Задание 7",
+      "maxScore": 3,
+      "parts": [
         {
-          "id": "A",
-          "label": "1) Клетки"
-        },
-        {
-          "id": "B",
-          "label": "2) Функция"
-        }
-      ],
-      "answer": {
-        "A": "guard_cells",
-        "B": "transpiration_gas_exchange"
-      },
-      "scoring": "twoElements",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "optionsBySlot": {
-        "A": [
-          {
-            "id": "guard_cells",
-            "label": "Замыкающие клетки устьица"
+          "id": "7.1",
+          "type": "dropdownGroup",
+          "title": "7.1. Устьице и его функция",
+          "description": "Выберите название клеток устьица и функцию, которую они обеспечивают.",
+          "maxScore": 2,
+          "items": [
+            {
+              "id": "A",
+              "label": "1) Клетки"
+            },
+            {
+              "id": "B",
+              "label": "2) Функция"
+            }
+          ],
+          "answer": {
+            "A": "guard_cells",
+            "B": "transpiration_gas_exchange"
           },
-          {
-            "id": "epidermis_cells",
-            "label": "Клетки кожицы листа"
-          },
-          {
-            "id": "root_hairs",
-            "label": "Корневые волоски"
-          },
-          {
-            "id": "sieve_tubes",
-            "label": "Ситовидные трубки"
+          "scoring": "twoElements",
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "optionsBySlot": {
+            "A": [
+              {
+                "id": "guard_cells",
+                "label": "Замыкающие клетки устьица"
+              },
+              {
+                "id": "epidermis_cells",
+                "label": "Клетки кожицы листа"
+              },
+              {
+                "id": "root_hairs",
+                "label": "Корневые волоски"
+              },
+              {
+                "id": "sieve_tubes",
+                "label": "Ситовидные трубки"
+              }
+            ],
+            "B": [
+              {
+                "id": "transpiration_gas_exchange",
+                "label": "Транспирация, испарение воды и газообмен"
+              },
+              {
+                "id": "mineral_absorption",
+                "label": "Поглощение минеральных веществ"
+              },
+              {
+                "id": "seed_protection",
+                "label": "Защита семени"
+              },
+              {
+                "id": "support",
+                "label": "Опора побега"
+              }
+            ]
           }
-        ],
-        "B": [
-          {
-            "id": "transpiration_gas_exchange",
-            "label": "Транспирация, испарение воды и газообмен"
-          },
-          {
-            "id": "mineral_absorption",
-            "label": "Поглощение минеральных веществ"
-          },
-          {
-            "id": "seed_protection",
-            "label": "Защита семени"
-          },
-          {
-            "id": "support",
-            "label": "Опора побега"
-          }
-        ]
-      }
-    },
-    {
-      "id": "7.2",
-      "type": "singleChoice",
-      "title": "7.2. Обозначение на рисунке",
-      "description": "Выберите букву, соответствующую правильному элементу.",
-      "maxScore": 1,
-      "options": [
-        {
-          "id": "A",
-          "label": "А"
         },
         {
-          "id": "B",
-          "label": "Б"
-        },
-        {
-          "id": "C",
-          "label": "В"
-        },
-        {
-          "id": "D",
-          "label": "Г"
+          "id": "7.2",
+          "type": "singleChoice",
+          "title": "7.2. Обозначение на рисунке",
+          "description": "Выберите букву, соответствующую правильному элементу.",
+          "maxScore": 1,
+          "options": [
+            {
+              "id": "A",
+              "label": "А"
+            },
+            {
+              "id": "B",
+              "label": "Б"
+            },
+            {
+              "id": "C",
+              "label": "В"
+            },
+            {
+              "id": "D",
+              "label": "Г"
+            }
+          ],
+          "answer": "A",
+          "scoring": "exact"
         }
-      ],
-      "answer": "A",
-      "scoring": "exact"
+      ]
     },
     {
       "id": "8",
@@ -685,652 +711,709 @@
       }
     },
     {
-      "id": "10.1",
-      "type": "dropdownGroup",
-      "title": "10.1. Расположение частей растения",
-      "description": "Установите соответствие для позиций А–Е; итоговая строка должна быть 132465.",
-      "maxScore": 2,
-      "items": [
+      "id": "10",
+      "title": "Задание 10",
+      "maxScore": 4,
+      "parts": [
         {
-          "id": "A",
-          "label": "А"
-        },
-        {
-          "id": "B",
-          "label": "Б"
-        },
-        {
-          "id": "C",
-          "label": "В"
-        },
-        {
-          "id": "D",
-          "label": "Г"
-        },
-        {
-          "id": "E",
-          "label": "Д"
-        },
-        {
-          "id": "F",
-          "label": "Е"
-        }
-      ],
-      "answer": {
-        "A": "1",
-        "B": "3",
-        "C": "2",
-        "D": "4",
-        "E": "6",
-        "F": "5"
-      },
-      "scoring": "partialByErrors",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "options": [
-        {
-          "id": "1",
-          "label": "1"
-        },
-        {
-          "id": "2",
-          "label": "2"
-        },
-        {
-          "id": "3",
-          "label": "3"
-        },
-        {
-          "id": "4",
-          "label": "4"
-        },
-        {
-          "id": "5",
-          "label": "5"
-        },
-        {
-          "id": "6",
-          "label": "6"
-        }
-      ],
-      "image": "assets/bio6_variant_1/q10.png"
-    },
-    {
-      "id": "10.2",
-      "type": "dropdownGroup",
-      "title": "10.2. Вегетативный и генеративный органы",
-      "description": "Выберите по одному примеру органа растения.",
-      "maxScore": 2,
-      "items": [
-        {
-          "id": "A",
-          "label": "1) Вегетативный орган"
-        },
-        {
-          "id": "B",
-          "label": "2) Генеративный орган"
-        }
-      ],
-      "answer": {
-        "A": "root",
-        "B": "flower"
-      },
-      "scoring": "twoElements",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "optionsBySlot": {
-        "A": [
-          {
-            "id": "root",
-            "label": "Корень"
+          "id": "10.1",
+          "type": "dropdownGroup",
+          "title": "10.1. Расположение частей растения",
+          "description": "Установите соответствие для позиций А–Е; итоговая строка должна быть 132465.",
+          "maxScore": 2,
+          "items": [
+            {
+              "id": "A",
+              "label": "А"
+            },
+            {
+              "id": "B",
+              "label": "Б"
+            },
+            {
+              "id": "C",
+              "label": "В"
+            },
+            {
+              "id": "D",
+              "label": "Г"
+            },
+            {
+              "id": "E",
+              "label": "Д"
+            },
+            {
+              "id": "F",
+              "label": "Е"
+            }
+          ],
+          "answer": {
+            "A": "1",
+            "B": "3",
+            "C": "2",
+            "D": "4",
+            "E": "6",
+            "F": "5"
           },
-          {
-            "id": "stem",
-            "label": "Стебель"
+          "scoring": "partialByErrors",
+          "options": [
+            {
+              "id": "1",
+              "label": "1"
+            },
+            {
+              "id": "2",
+              "label": "2"
+            },
+            {
+              "id": "3",
+              "label": "3"
+            },
+            {
+              "id": "4",
+              "label": "4"
+            },
+            {
+              "id": "5",
+              "label": "5"
+            },
+            {
+              "id": "6",
+              "label": "6"
+            }
+          ],
+          "image": "assets/bio6_variant_1/q10.png"
+        },
+        {
+          "id": "10.2",
+          "type": "dropdownGroup",
+          "title": "10.2. Вегетативный и генеративный органы",
+          "description": "Выберите по одному примеру органа растения.",
+          "maxScore": 2,
+          "items": [
+            {
+              "id": "A",
+              "label": "1) Вегетативный орган"
+            },
+            {
+              "id": "B",
+              "label": "2) Генеративный орган"
+            }
+          ],
+          "answer": {
+            "A": "root",
+            "B": "flower"
           },
-          {
-            "id": "leaf",
-            "label": "Лист"
-          },
-          {
-            "id": "flower",
-            "label": "Цветок"
+          "scoring": "twoElements",
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "optionsBySlot": {
+            "A": [
+              {
+                "id": "root",
+                "label": "Корень"
+              },
+              {
+                "id": "stem",
+                "label": "Стебель"
+              },
+              {
+                "id": "leaf",
+                "label": "Лист"
+              },
+              {
+                "id": "flower",
+                "label": "Цветок"
+              },
+              {
+                "id": "inflorescence",
+                "label": "Соцветие"
+              },
+              {
+                "id": "fruit",
+                "label": "Плод"
+              },
+              {
+                "id": "seeds",
+                "label": "Семена"
+              }
+            ],
+            "B": [
+              {
+                "id": "flower",
+                "label": "Цветок"
+              },
+              {
+                "id": "inflorescence",
+                "label": "Соцветие"
+              },
+              {
+                "id": "fruit",
+                "label": "Плод"
+              },
+              {
+                "id": "seeds",
+                "label": "Семена"
+              },
+              {
+                "id": "root",
+                "label": "Корень"
+              },
+              {
+                "id": "stem",
+                "label": "Стебель"
+              },
+              {
+                "id": "leaf",
+                "label": "Лист"
+              }
+            ]
           }
-        ],
-        "B": [
-          {
-            "id": "flower",
-            "label": "Цветок"
-          },
-          {
-            "id": "inflorescence",
-            "label": "Соцветие"
-          },
-          {
-            "id": "fruit",
-            "label": "Плод"
-          },
-          {
-            "id": "seed",
-            "label": "Семя"
-          },
-          {
-            "id": "root",
-            "label": "Корень"
-          }
-        ]
-      }
-    },
-    {
-      "id": "11.1",
-      "type": "dropdownGroup",
-      "title": "11.1. Анализ первого набора данных",
-      "description": "Установите соответствие для позиций А, Б и В; итоговая строка должна быть 133.",
-      "maxScore": 2,
-      "items": [
-        {
-          "id": "A",
-          "label": "А"
-        },
-        {
-          "id": "B",
-          "label": "Б"
-        },
-        {
-          "id": "C",
-          "label": "В"
-        }
-      ],
-      "answer": {
-        "A": "1",
-        "B": "3",
-        "C": "3"
-      },
-      "scoring": "partialByErrors",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "options": [
-        {
-          "id": "1",
-          "label": "1"
-        },
-        {
-          "id": "2",
-          "label": "2"
-        },
-        {
-          "id": "3",
-          "label": "3"
-        },
-        {
-          "id": "4",
-          "label": "4"
-        },
-        {
-          "id": "5",
-          "label": "5"
-        },
-        {
-          "id": "6",
-          "label": "6"
-        },
-        {
-          "id": "7",
-          "label": "7"
-        },
-        {
-          "id": "8",
-          "label": "8"
-        },
-        {
-          "id": "9",
-          "label": "9"
         }
       ]
     },
     {
-      "id": "11.2",
-      "type": "dropdownGroup",
-      "title": "11.2. Анализ второго набора данных",
-      "description": "Установите соответствие для позиций А, Б и В; итоговая строка должна быть 117.",
-      "maxScore": 2,
-      "items": [
+      "id": "11",
+      "title": "Задание 11",
+      "maxScore": 7,
+      "parts": [
         {
-          "id": "A",
-          "label": "А"
+          "id": "11.1",
+          "type": "dropdownGroup",
+          "title": "11.1. Анализ первого набора данных",
+          "description": "Установите соответствие для позиций А, Б и В; итоговая строка должна быть 133.",
+          "maxScore": 2,
+          "items": [
+            {
+              "id": "A",
+              "label": "А"
+            },
+            {
+              "id": "B",
+              "label": "Б"
+            },
+            {
+              "id": "C",
+              "label": "В"
+            }
+          ],
+          "answer": {
+            "A": "1",
+            "B": "3",
+            "C": "3"
+          },
+          "scoring": "partialByErrors",
+          "options": [
+            {
+              "id": "1",
+              "label": "1"
+            },
+            {
+              "id": "2",
+              "label": "2"
+            },
+            {
+              "id": "3",
+              "label": "3"
+            },
+            {
+              "id": "4",
+              "label": "4"
+            },
+            {
+              "id": "5",
+              "label": "5"
+            },
+            {
+              "id": "6",
+              "label": "6"
+            },
+            {
+              "id": "7",
+              "label": "7"
+            },
+            {
+              "id": "8",
+              "label": "8"
+            },
+            {
+              "id": "9",
+              "label": "9"
+            }
+          ]
         },
         {
-          "id": "B",
-          "label": "Б"
+          "id": "11.2",
+          "type": "dropdownGroup",
+          "title": "11.2. Анализ второго набора данных",
+          "description": "Установите соответствие для позиций А, Б и В; итоговая строка должна быть 117.",
+          "maxScore": 2,
+          "items": [
+            {
+              "id": "A",
+              "label": "А"
+            },
+            {
+              "id": "B",
+              "label": "Б"
+            },
+            {
+              "id": "C",
+              "label": "В"
+            }
+          ],
+          "answer": {
+            "A": "1",
+            "B": "1",
+            "C": "7"
+          },
+          "scoring": "partialByErrors",
+          "options": [
+            {
+              "id": "1",
+              "label": "1"
+            },
+            {
+              "id": "2",
+              "label": "2"
+            },
+            {
+              "id": "3",
+              "label": "3"
+            },
+            {
+              "id": "4",
+              "label": "4"
+            },
+            {
+              "id": "5",
+              "label": "5"
+            },
+            {
+              "id": "6",
+              "label": "6"
+            },
+            {
+              "id": "7",
+              "label": "7"
+            },
+            {
+              "id": "8",
+              "label": "8"
+            },
+            {
+              "id": "9",
+              "label": "9"
+            }
+          ]
         },
         {
-          "id": "C",
-          "label": "В"
-        }
-      ],
-      "answer": {
-        "A": "1",
-        "B": "1",
-        "C": "7"
-      },
-      "scoring": "partialByErrors",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "options": [
-        {
-          "id": "1",
-          "label": "1"
+          "id": "11.3",
+          "type": "dropdownGroup",
+          "title": "11.3. Анализ третьего набора данных",
+          "description": "Установите соответствие для позиций А, Б и В; итоговая строка должна быть 192.",
+          "maxScore": 2,
+          "items": [
+            {
+              "id": "A",
+              "label": "А"
+            },
+            {
+              "id": "B",
+              "label": "Б"
+            },
+            {
+              "id": "C",
+              "label": "В"
+            }
+          ],
+          "answer": {
+            "A": "1",
+            "B": "9",
+            "C": "2"
+          },
+          "scoring": "partialByErrors",
+          "options": [
+            {
+              "id": "1",
+              "label": "1"
+            },
+            {
+              "id": "2",
+              "label": "2"
+            },
+            {
+              "id": "3",
+              "label": "3"
+            },
+            {
+              "id": "4",
+              "label": "4"
+            },
+            {
+              "id": "5",
+              "label": "5"
+            },
+            {
+              "id": "6",
+              "label": "6"
+            },
+            {
+              "id": "7",
+              "label": "7"
+            },
+            {
+              "id": "8",
+              "label": "8"
+            },
+            {
+              "id": "9",
+              "label": "9"
+            }
+          ]
         },
         {
-          "id": "2",
-          "label": "2"
-        },
-        {
-          "id": "3",
-          "label": "3"
-        },
-        {
-          "id": "4",
-          "label": "4"
-        },
-        {
-          "id": "5",
-          "label": "5"
-        },
-        {
-          "id": "6",
-          "label": "6"
-        },
-        {
-          "id": "7",
-          "label": "7"
-        },
-        {
-          "id": "8",
-          "label": "8"
-        },
-        {
-          "id": "9",
-          "label": "9"
+          "id": "11.4",
+          "type": "singleChoice",
+          "title": "11.4. Выбор вывода",
+          "description": "Выберите номер правильного вывода.",
+          "maxScore": 1,
+          "options": [
+            {
+              "id": "1",
+              "label": "1"
+            },
+            {
+              "id": "2",
+              "label": "2"
+            },
+            {
+              "id": "3",
+              "label": "3"
+            },
+            {
+              "id": "4",
+              "label": "4"
+            }
+          ],
+          "answer": "2",
+          "scoring": "exact"
         }
       ]
     },
     {
-      "id": "11.3",
-      "type": "dropdownGroup",
-      "title": "11.3. Анализ третьего набора данных",
-      "description": "Установите соответствие для позиций А, Б и В; итоговая строка должна быть 192.",
-      "maxScore": 2,
-      "items": [
+      "id": "12",
+      "title": "Задание 12",
+      "maxScore": 3,
+      "parts": [
         {
-          "id": "A",
-          "label": "А"
+          "id": "12К1",
+          "type": "dropdownGroup",
+          "title": "12К1. Определение органов растения",
+          "description": "Определите, какой орган изображён на каждом образце.",
+          "maxScore": 2,
+          "items": [
+            {
+              "id": "A",
+              "label": "А"
+            },
+            {
+              "id": "B",
+              "label": "Б"
+            },
+            {
+              "id": "C",
+              "label": "В"
+            }
+          ],
+          "answer": {
+            "A": "root",
+            "B": "stem",
+            "C": "leaf"
+          },
+          "scoring": "countCorrect",
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "optionsBySlot": {
+            "A": [
+              {
+                "id": "root",
+                "label": "Корень"
+              },
+              {
+                "id": "stem",
+                "label": "Стебель"
+              },
+              {
+                "id": "leaf",
+                "label": "Лист"
+              },
+              {
+                "id": "flower",
+                "label": "Цветок"
+              }
+            ],
+            "B": [
+              {
+                "id": "root",
+                "label": "Корень"
+              },
+              {
+                "id": "stem",
+                "label": "Стебель"
+              },
+              {
+                "id": "leaf",
+                "label": "Лист"
+              },
+              {
+                "id": "fruit",
+                "label": "Плод"
+              }
+            ],
+            "C": [
+              {
+                "id": "root",
+                "label": "Корень"
+              },
+              {
+                "id": "stem",
+                "label": "Стебель"
+              },
+              {
+                "id": "leaf",
+                "label": "Лист"
+              },
+              {
+                "id": "seed",
+                "label": "Семя"
+              }
+            ]
+          },
+          "scoreMap": {
+            "0": 0,
+            "1": 0,
+            "2": 1,
+            "3": 2
+          },
+          "image": "assets/bio6_variant_1/q12.png"
         },
         {
-          "id": "B",
-          "label": "Б"
-        },
-        {
-          "id": "C",
-          "label": "В"
-        }
-      ],
-      "answer": {
-        "A": "1",
-        "B": "9",
-        "C": "2"
-      },
-      "scoring": "partialByErrors",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "options": [
-        {
-          "id": "1",
-          "label": "1"
-        },
-        {
-          "id": "2",
-          "label": "2"
-        },
-        {
-          "id": "3",
-          "label": "3"
-        },
-        {
-          "id": "4",
-          "label": "4"
-        },
-        {
-          "id": "5",
-          "label": "5"
-        },
-        {
-          "id": "6",
-          "label": "6"
-        },
-        {
-          "id": "7",
-          "label": "7"
-        },
-        {
-          "id": "8",
-          "label": "8"
-        },
-        {
-          "id": "9",
-          "label": "9"
+          "id": "12К2",
+          "type": "dropdown",
+          "title": "12К2. Объяснение признака образца А",
+          "description": "Выберите объяснение, почему образец А относится к указанному органу.",
+          "maxScore": 1,
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "options": [
+            {
+              "id": "root_radial_bundle_hairs",
+              "label": "На рисунке А изображён корень: заметен радиальный сосудистый пучок и корневые волоски"
+            },
+            {
+              "id": "leaf_stomata",
+              "label": "Это лист, потому что видны устьица и мякоть листа"
+            },
+            {
+              "id": "stem_nodes",
+              "label": "Это стебель, потому что видны узлы и междоузлия"
+            },
+            {
+              "id": "flower_parts",
+              "label": "Это цветок, потому что видны тычинки и пестик"
+            }
+          ],
+          "answer": "root_radial_bundle_hairs",
+          "scoring": "dependentCriterion",
+          "dependsOn": "12К1.A",
+          "dependsOnAnswer": "root"
         }
       ]
-    },
-    {
-      "id": "11.4",
-      "type": "singleChoice",
-      "title": "11.4. Выбор вывода",
-      "description": "Выберите номер правильного вывода.",
-      "maxScore": 1,
-      "options": [
-        {
-          "id": "1",
-          "label": "1"
-        },
-        {
-          "id": "2",
-          "label": "2"
-        },
-        {
-          "id": "3",
-          "label": "3"
-        },
-        {
-          "id": "4",
-          "label": "4"
-        }
-      ],
-      "answer": "2",
-      "scoring": "exact"
-    },
-    {
-      "id": "12К1",
-      "type": "dropdownGroup",
-      "title": "12К1. Определение органов растения",
-      "description": "Определите, какой орган изображён на каждом образце.",
-      "maxScore": 2,
-      "items": [
-        {
-          "id": "A",
-          "label": "А"
-        },
-        {
-          "id": "B",
-          "label": "Б"
-        },
-        {
-          "id": "C",
-          "label": "В"
-        }
-      ],
-      "answer": {
-        "A": "root",
-        "B": "stem",
-        "C": "leaf"
-      },
-      "scoring": "countCorrect",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "optionsBySlot": {
-        "A": [
-          {
-            "id": "root",
-            "label": "Корень"
-          },
-          {
-            "id": "stem",
-            "label": "Стебель"
-          },
-          {
-            "id": "leaf",
-            "label": "Лист"
-          },
-          {
-            "id": "flower",
-            "label": "Цветок"
-          }
-        ],
-        "B": [
-          {
-            "id": "root",
-            "label": "Корень"
-          },
-          {
-            "id": "stem",
-            "label": "Стебель"
-          },
-          {
-            "id": "leaf",
-            "label": "Лист"
-          },
-          {
-            "id": "fruit",
-            "label": "Плод"
-          }
-        ],
-        "C": [
-          {
-            "id": "root",
-            "label": "Корень"
-          },
-          {
-            "id": "stem",
-            "label": "Стебель"
-          },
-          {
-            "id": "leaf",
-            "label": "Лист"
-          },
-          {
-            "id": "seed",
-            "label": "Семя"
-          }
-        ]
-      },
-      "scoreMap": {
-        "0": 0,
-        "1": 0,
-        "2": 1,
-        "3": 2
-      },
-      "image": "assets/bio6_variant_1/q12.png"
-    },
-    {
-      "id": "12К2",
-      "type": "dropdown",
-      "title": "12К2. Объяснение признака образца А",
-      "description": "Выберите объяснение, почему образец А относится к указанному органу.",
-      "maxScore": 1,
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "options": [
-        {
-          "id": "root_radial_bundle_hairs",
-          "label": "На рисунке А изображён корень: заметен радиальный сосудистый пучок и корневые волоски"
-        },
-        {
-          "id": "leaf_stomata",
-          "label": "Это лист, потому что видны устьица и мякоть листа"
-        },
-        {
-          "id": "stem_nodes",
-          "label": "Это стебель, потому что видны узлы и междоузлия"
-        },
-        {
-          "id": "flower_parts",
-          "label": "Это цветок, потому что видны тычинки и пестик"
-        }
-      ],
-      "answer": "root_radial_bundle_hairs",
-      "scoring": "dependentCriterion",
-      "dependsOn": "12К1.A",
-      "dependsOnAnswer": "root"
     },
     {
       "id": "13",
-      "type": "dropdownGroup",
-      "title": "13. Ткань растения и функция",
-      "description": "Выберите ткань и её функцию.",
+      "title": "Задание 13",
+      "description": "Определите ткань растения и её функцию.",
       "maxScore": 2,
-      "items": [
+      "scoring": "firstElementRequired",
+      "answer": {
+        "13.1": "conductive",
+        "13.2": "transport"
+      },
+      "parts": [
         {
-          "id": "A",
-          "label": "1) Ткань"
+          "id": "13.1",
+          "type": "dropdown",
+          "title": "13.1. Название ткани",
+          "description": "Выберите название ткани растения.",
+          "maxScore": 1,
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "options": [
+            {
+              "id": "conductive",
+              "label": "Проводящая"
+            },
+            {
+              "id": "covering",
+              "label": "Покровная"
+            },
+            {
+              "id": "mechanical",
+              "label": "Механическая"
+            },
+            {
+              "id": "storage",
+              "label": "Запасающая"
+            }
+          ],
+          "answer": "conductive",
+          "scoring": "exact",
+          "correctDisplay": "проводящая"
         },
         {
-          "id": "B",
-          "label": "2) Функция"
+          "id": "13.2",
+          "type": "dropdown",
+          "title": "13.2. Функция ткани",
+          "description": "Выберите номер функции ткани из предложенных вариантов.",
+          "maxScore": 1,
+          "options": [
+            {
+              "id": "protection",
+              "label": "1 — защитная"
+            },
+            {
+              "id": "support",
+              "label": "2 — опорная"
+            },
+            {
+              "id": "growth",
+              "label": "3 — ростовая"
+            },
+            {
+              "id": "storage",
+              "label": "4 — запасающая"
+            },
+            {
+              "id": "transport",
+              "label": "5 — транспортная"
+            }
+          ],
+          "answer": "transport",
+          "scoring": "exact",
+          "correctDisplay": "5 / транспортная"
         }
       ],
-      "answer": {
-        "A": "conductive",
-        "B": "transport"
-      },
-      "scoring": "firstElementRequired",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "optionsBySlot": {
-        "A": [
-          {
-            "id": "conductive",
-            "label": "Проводящая"
-          },
-          {
-            "id": "covering",
-            "label": "Покровная"
-          },
-          {
-            "id": "mechanical",
-            "label": "Механическая"
-          },
-          {
-            "id": "storage",
-            "label": "Запасающая"
-          }
-        ],
-        "B": [
-          {
-            "id": "transport",
-            "label": "5 — транспортная"
-          },
-          {
-            "id": "protection",
-            "label": "1 — защитная"
-          },
-          {
-            "id": "support",
-            "label": "2 — опорная"
-          },
-          {
-            "id": "growth",
-            "label": "3 — ростовая"
-          }
-        ]
-      },
       "image": "assets/bio6_variant_1/q13.png"
     },
     {
-      "id": "14.1",
-      "type": "multipleChoice",
-      "title": "14.1. Выбор двух признаков",
-      "description": "Выберите два правильных ответа.",
-      "image": "assets/bio6_variant_1/q14.png",
-      "maxScore": 1,
-      "options": [
+      "id": "14",
+      "title": "Задание 14",
+      "maxScore": 3,
+      "parts": [
         {
-          "id": "1",
-          "label": "1"
+          "id": "14.1",
+          "type": "multipleChoice",
+          "title": "14.1. Выбор двух признаков",
+          "description": "Выберите два правильных ответа.",
+          "image": "assets/bio6_variant_1/q14.png",
+          "maxScore": 1,
+          "options": [
+            {
+              "id": "1",
+              "label": "1"
+            },
+            {
+              "id": "2",
+              "label": "2"
+            },
+            {
+              "id": "3",
+              "label": "3"
+            },
+            {
+              "id": "4",
+              "label": "4"
+            },
+            {
+              "id": "5",
+              "label": "5"
+            }
+          ],
+          "answer": [
+            "3",
+            "5"
+          ],
+          "scoring": "setExact"
         },
         {
-          "id": "2",
-          "label": "2"
-        },
-        {
-          "id": "3",
-          "label": "3"
-        },
-        {
-          "id": "4",
-          "label": "4"
-        },
-        {
-          "id": "5",
-          "label": "5"
-        }
-      ],
-      "answer": [
-        "3",
-        "5"
-      ],
-      "scoring": "setExact"
-    },
-    {
-      "id": "14.2",
-      "type": "dropdownGroup",
-      "title": "14.2. Цифра и ткань",
-      "description": "Выберите обозначение и название ткани.",
-      "maxScore": 2,
-      "items": [
-        {
-          "id": "A",
-          "label": "1) Цифра"
-        },
-        {
-          "id": "B",
-          "label": "2) Ткань"
-        }
-      ],
-      "answer": {
-        "A": "2",
-        "B": "epidermis"
-      },
-      "scoring": "firstElementRequired",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
-      "optionsBySlot": {
-        "A": [
-          {
-            "id": "1",
-            "label": "1"
+          "id": "14.2",
+          "type": "dropdownGroup",
+          "title": "14.2. Цифра и ткань",
+          "description": "Выберите обозначение и название ткани.",
+          "maxScore": 2,
+          "items": [
+            {
+              "id": "A",
+              "label": "1) Цифра"
+            },
+            {
+              "id": "B",
+              "label": "2) Ткань"
+            }
+          ],
+          "answer": {
+            "A": "2",
+            "B": "epidermis"
           },
-          {
-            "id": "2",
-            "label": "2"
+          "scoring": "firstElementRequired",
+          "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
+          "placeholder": "— сначала подумай сам, затем выбери —",
+          "optionsBySlot": {
+            "A": [
+              {
+                "id": "1",
+                "label": "1"
+              },
+              {
+                "id": "2",
+                "label": "2"
+              },
+              {
+                "id": "3",
+                "label": "3"
+              },
+              {
+                "id": "4",
+                "label": "4"
+              }
+            ],
+            "B": [
+              {
+                "id": "epidermis",
+                "label": "Эпидермис"
+              },
+              {
+                "id": "xylem",
+                "label": "Ксилема"
+              },
+              {
+                "id": "phloem",
+                "label": "Флоэма"
+              },
+              {
+                "id": "parenchyma",
+                "label": "Основная ткань"
+              }
+            ]
           },
-          {
-            "id": "3",
-            "label": "3"
-          },
-          {
-            "id": "4",
-            "label": "4"
+          "correctDisplay": {
+            "A": "2",
+            "B": "эпидермис"
           }
-        ],
-        "B": [
-          {
-            "id": "epidermis",
-            "label": "Эпидермис"
-          },
-          {
-            "id": "xylem",
-            "label": "Ксилема"
-          },
-          {
-            "id": "phloem",
-            "label": "Флоэма"
-          },
-          {
-            "id": "parenchyma",
-            "label": "Основная ткань"
-          }
-        ]
-      }
+        }
+      ]
     },
     {
       "id": "15",
@@ -1353,8 +1436,6 @@
         "B": "4"
       },
       "scoring": "partialByErrors",
-      "strictHint": "Строгий режим: сначала подумай сам и запиши ответ на бумаге, затем выбери из списка.",
-      "placeholder": "— сначала подумай сам, затем выбери —",
       "options": [
         {
           "id": "1",
@@ -1411,7 +1492,8 @@
       ],
       "answer": "sugar_solution",
       "scoring": "exact",
-      "image": "assets/bio6_variant_1/q16.png"
+      "image": "assets/bio6_variant_1/q16.png",
+      "correctDisplay": "раствор сахаров / органических веществ"
     }
   ]
 }
