@@ -81,7 +81,7 @@ async function loadVariant(variantId) {
     updateProgress();
   });
   updateProgress();
-  setStatus(`${variant.title}: ${variant.tasks.length} заданий, максимум ${variant.maxScore} балла.`);
+  setStatus(`${getDisplayTasksCount(variant)} заданий, максимум ${variant.maxScore} ${formatPoints(variant.maxScore)}`);
 }
 
 function renderVariantSelect(variants) {
@@ -98,7 +98,7 @@ function updateProgress() {
   }
 
   const answered = countAnsweredTasks(state.currentVariant, elements.tasks);
-  const total = state.currentVariant.tasks.length;
+  const total = getDisplayTasksCount(state.currentVariant);
   elements.progressText.textContent = `${answered} из ${total}`;
   elements.progressBar.value = total > 0 ? Math.round((answered / total) * 100) : 0;
 }
@@ -116,6 +116,22 @@ function validateVariant(variant) {
   if (tasksScore !== variant.maxScore) {
     console.warn(`Сумма баллов заданий (${tasksScore}) не равна maxScore варианта (${variant.maxScore}).`);
   }
+}
+
+function getDisplayTasksCount(variant) {
+  return variant.tasksCount ?? countUniqueTaskNumbers(variant);
+}
+
+function countUniqueTaskNumbers(variant) {
+  return new Set(variant.tasks.map((task) => task.taskNo ?? task.id)).size;
+}
+
+function formatPoints(value) {
+  const mod10 = value % 10;
+  const mod100 = value % 100;
+  if (mod10 === 1 && mod100 !== 11) return 'балл';
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return 'балла';
+  return 'баллов';
 }
 
 function setStatus(message) {

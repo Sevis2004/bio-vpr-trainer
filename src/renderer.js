@@ -4,17 +4,17 @@ export function renderVariant(variant, container, onChange) {
   container.innerHTML = '';
   const fragment = document.createDocumentFragment();
 
-  variant.tasks.forEach((task, index) => {
+  variant.tasks.forEach((task) => {
     const card = document.createElement('article');
     card.className = 'task-card';
     card.dataset.taskId = task.id;
     card.dataset.taskType = task.type;
     card.innerHTML = `
       <div class="task-head">
-        <div class="task-number">Задание ${index + 1}</div>
+        <div class="task-number">Задание ${escapeHtml(task.taskNo ?? task.id)}${task.partNo ? ` · ${escapeHtml(task.partNo)}` : ''}</div>
         <div class="task-points">${task.maxScore} ${formatPoints(task.maxScore)}</div>
       </div>
-      <h2>${escapeHtml(task.title)}</h2>
+      <h2>${escapeHtml(task.displayTitle ?? task.title)}</h2>
       ${task.description ? `<p class="task-description">${escapeHtml(task.description)}</p>` : ''}
       <div class="task-body"></div>
     `;
@@ -38,7 +38,18 @@ export function readAnswers(variant, container) {
 
 export function countAnsweredTasks(variant, container) {
   const answers = readAnswers(variant, container);
-  return variant.tasks.filter((task) => isAnswered(task, answers[task.id])).length;
+  const grouped = new Map();
+
+  variant.tasks.forEach((task) => {
+    const taskNo = task.taskNo ?? task.id;
+    const group = grouped.get(taskNo) ?? [];
+    group.push(task);
+    grouped.set(taskNo, group);
+  });
+
+  return Array.from(grouped.values()).filter((tasks) => {
+    return tasks.every((task) => isAnswered(task, answers[task.id]));
+  }).length;
 }
 
 export function applyResults(container, result) {
@@ -242,7 +253,7 @@ function markCorrectAnswers(card, taskResult) {
 
   if (card.dataset.taskType === 'dropdown') {
     const select = card.querySelector('select');
-    const optionText = select?.querySelector(`option[value="${CSS.escape(correctAnswer)}"]`)?.textContent ?? correctAnswer;
+    const optionText = taskResult.correctDisplay ?? select?.querySelector(`option[value="${CSS.escape(correctAnswer)}"]`)?.textContent ?? correctAnswer;
     select?.closest('.dropdown-item')?.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(optionText)}</div>`);
     return;
   }
@@ -251,7 +262,7 @@ function markCorrectAnswers(card, taskResult) {
     Object.entries(correctAnswer).forEach(([itemId, optionId]) => {
       const item = card.querySelector(`[data-item-id="${CSS.escape(itemId)}"]`);
       const select = item?.querySelector('select');
-      const optionText = select?.querySelector(`option[value="${CSS.escape(optionId)}"]`)?.textContent ?? optionId;
+      const optionText = taskResult.correctDisplay ?? select?.querySelector(`option[value="${CSS.escape(optionId)}"]`)?.textContent ?? optionId;
       item?.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(optionText)}</div>`);
     });
     return;
