@@ -1,7 +1,7 @@
 export function gradeVariant(variant, answers) {
   const taskResults = variant.tasks.map((task, index) => {
     const userAnswer = answers[task.id] ?? null;
-    const result = gradeTask(task, userAnswer);
+    const result = gradeTask(task, userAnswer, answers);
 
     return {
       number: index + 1,
@@ -29,16 +29,26 @@ export function gradeVariant(variant, answers) {
   };
 }
 
-export function gradeTask(task, userAnswer) {
-  switch (task.type) {
-    case 'singleChoice':
+export function gradeTask(task, userAnswer, allAnswers = {}) {
+  const scoring = task.scoring ?? getDefaultScoring(task.type);
+
+  switch (scoring) {
+    case 'exact':
       return gradeExact(task, userAnswer);
-    case 'multipleChoice':
+    case 'setExact':
       return gradeSet(task, userAnswer);
-    case 'dropdownGroup':
+    case 'partialByErrors':
       return gradePartialByErrors(task, userAnswer);
-    case 'dragToSlots':
-      return gradeDragByCorrectCount(task, userAnswer);
+    case 'countCorrect':
+      return gradeByCorrectCount(task, userAnswer);
+    case 'twoElements':
+      return gradeTwoElements(task, userAnswer);
+    case 'firstElementRequired':
+      return gradeFirstElementRequired(task, userAnswer);
+    case 'allOrNothing':
+      return gradeAllOrNothing(task, userAnswer);
+    case 'dependentCriterion':
+      return gradeDependentCriterion(task, userAnswer, allAnswers);
     default:
       return {
         score: 0,
@@ -86,17 +96,64 @@ export function gradePartialByErrors(task, userAnswer = {}) {
 }
 
 export function gradeDragByCorrectCount(task, userAnswer = {}) {
-  const correctCount = Object.entries(task.answer).reduce((count, [slotId, cardId]) => {
-    return count + (userAnswer?.[slotId] === cardId ? 1 : 0);
+  return gradeByCorrectCount(task, userAnswer);
+}
+
+export function gradeByCorrectCount(task, userAnswer = {}) {
+  const correctCount = Object.entries(task.answer).reduce((count, [slotId, expectedValue]) => {
+    return count + (userAnswer?.[slotId] === expectedValue ? 1 : 0);
   }, 0);
-  const scoreMap = task.scoreMap ?? {};
-  const score = Number(scoreMap[String(correctCount)] ?? 0);
+  const score = getScoreByCorrectCount(task, correctCount);
 
   return {
     score,
     status: score === task.maxScore ? 'correct' : score > 0 ? 'partial' : 'wrong',
     errors: Object.keys(task.answer).length - correctCount,
     correctCount,
+  };
+}
+
+export function gradeTwoElements(task, userAnswer = {}) {
+  const correctCount = countCorrectElements(task, userAnswer);
+  const score = correctCount === 2 ? 2 : correctCount === 1 ? 1 : 0;
+
+  return buildElementResult(task, score, Object.keys(task.answer).length - correctCount, correctCount);
+}
+
+export function gradeFirstElementRequired(task, userAnswer = {}) {
+  const entries = Object.entries(task.answer);
+  const [firstKey, firstValue] = entries[0] ?? [];
+  const firstCorrect = firstKey !== undefined && userAnswer?.[firstKey] === firstValue;
+  const secondCorrect = entries.slice(1).some(([key, value]) => userAnswer?.[key] === value);
+  const score = firstCorrect ? (secondCorrect ? task.maxScore : 1) : 0;
+  const correctCount = Number(firstCorrect) + Number(secondCorrect);
+
+  return buildElementResult(task, score, entries.length - correctCount, correctCount);
+}
+
+export function gradeAllOrNothing(task, userAnswer = {}) {
+  const errors = countErrors(task, userAnswer);
+  const score = errors === 0 ? task.maxScore : 0;
+
+  return {
+    score,
+    status: errors === 0 ? 'correct' : 'wrong',
+    errors,
+  };
+}
+
+export function gradeDependentCriterion(task, userAnswer, allAnswers = {}) {
+  const dependency = parseDependency(task.dependsOn);
+  const dependencyAnswer = dependency ? allAnswers?.[dependency.taskId]?.[dependency.itemId] : undefined;
+  const dependencyExpected = dependency ? task.dependsOnAnswer ?? task.dependencyAnswer : undefined;
+  const dependencyCorrect = dependencyExpected !== undefined && dependencyAnswer === dependencyExpected;
+  const answerCorrect = userAnswer === task.answer;
+  const isCorrect = dependencyCorrect && answerCorrect;
+
+  return {
+    score: isCorrect ? task.maxScore : 0,
+    status: isCorrect ? 'correct' : 'wrong',
+    errors: isCorrect ? 0 : 1,
   };
 }
 
@@ -108,12 +165,13 @@ export function getMark(score, gradeScale = []) {
 export function formatCorrectAnswer(task) {
   switch (task.type) {
     case 'singleChoice':
+    case 'dropdown':
       return getOptionLabel(task.options, task.answer);
     case 'multipleChoice':
       return task.answer.map((id) => getOptionLabel(task.options, id)).join('; ');
     case 'dropdownGroup':
       return task.items
-        .map((item) => `${item.label}: ${getOptionLabel(item.options, task.answer[item.id])}`)
+        .map((item) => `${item.label}: ${getOptionLabel(getDropdownOptions(task, item), task.answer[item.id])}`)
         .join('; ');
     case 'dragToSlots':
       return task.slots
@@ -122,6 +180,53 @@ export function formatCorrectAnswer(task) {
     default:
       return 'Нет данных';
   }
+}
+
+function getDefaultScoring(type) {
+  return {
+    singleChoice: 'exact',
+    dropdown: 'exact',
+    multipleChoice: 'setExact',
+    dropdownGroup: 'partialByErrors',
+    dragToSlots: 'countCorrect',
+  }[type];
+}
+
+function getScoreByCorrectCount(task, correctCount) {
+  const scoreMap = task.scoreMap ?? {};
+  if (scoreMap[String(correctCount)] !== undefined) {
+    return Number(scoreMap[String(correctCount)]);
+  }
+  if (correctCount === Object.keys(task.answer).length) return task.maxScore;
+  if (correctCount === Object.keys(task.answer).length - 1) return 1;
+  return 0;
+}
+
+function buildElementResult(task, score, errors, correctCount) {
+  return {
+    score,
+    status: score === task.maxScore ? 'correct' : score > 0 ? 'partial' : 'wrong',
+    errors,
+    correctCount,
+  };
+}
+
+function countCorrectElements(task, userAnswer = {}) {
+  return Object.entries(task.answer).reduce((count, [key, value]) => count + (userAnswer?.[key] === value ? 1 : 0), 0);
+}
+
+function countErrors(task, userAnswer = {}) {
+  return Object.entries(task.answer).reduce((count, [key, value]) => count + (userAnswer?.[key] === value ? 0 : 1), 0);
+}
+
+function parseDependency(value) {
+  if (!value) return null;
+  const index = value.lastIndexOf('.');
+  if (index === -1) return null;
+  return {
+    taskId: value.slice(0, index),
+    itemId: value.slice(index + 1),
+  };
 }
 
 function normalizeSet(value) {
@@ -134,7 +239,11 @@ function countSetErrors(expected, actual) {
   return missing + extra;
 }
 
-function getOptionLabel(options, id) {
+function getDropdownOptions(task, item) {
+  return item.options ?? task.optionsBySlot?.[item.id] ?? task.options ?? [];
+}
+
+function getOptionLabel(options = [], id) {
   return options.find((option) => option.id === id)?.label ?? id;
 }
 
