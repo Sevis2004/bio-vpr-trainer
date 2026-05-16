@@ -1,5 +1,5 @@
 import { gradeVariant } from './grader.js';
-import { applyResults, clearResults, countAnsweredTasks, readAnswers, renderVariant } from './renderer.js';
+import { applyResults, clearResults, countCompletedTaskGroups, countTaskGroups, readAnswers, renderVariant } from './renderer.js';
 import { clearResultsPanel, renderResults } from './results.js';
 
 const state = {
@@ -92,15 +92,15 @@ function renderVariantSelect(variants) {
 
 function updateProgress() {
   if (!state.currentVariant) {
-    elements.progressText.textContent = 'Ответов: 0 из 0';
+    elements.progressText.textContent = 'Заданий: 0 из 0';
     elements.progressBar.value = 0;
     return;
   }
 
-  const answered = countAnsweredTasks(state.currentVariant, elements.tasks);
-  const total = state.currentVariant.tasks.length;
-  elements.progressText.textContent = `Ответов: ${answered} из ${total}`;
-  elements.progressBar.value = total > 0 ? Math.round((answered / total) * 100) : 0;
+  const completed = countCompletedTaskGroups(state.currentVariant, elements.tasks);
+  const total = countTaskGroups(state.currentVariant);
+  elements.progressText.textContent = `Заданий: ${completed} из ${total}`;
+  elements.progressBar.value = total > 0 ? Math.round((completed / total) * 100) : 0;
 }
 
 async function fetchJson(url) {

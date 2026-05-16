@@ -4,7 +4,7 @@ export function gradeVariant(variant, answers) {
     const result = gradeTask(task, userAnswer, answers);
 
     return {
-      number: getDisplayTaskNumber(task),
+      number: getResultTaskNumber(task),
       taskId: task.id,
       title: task.title,
       maxScore: task.maxScore,
@@ -182,21 +182,12 @@ export function formatCorrectAnswer(task) {
   }
 }
 
-function getDisplayTaskNumber(task) {
-  if (task.taskNo !== undefined && task.taskNo !== null && String(task.taskNo).trim() !== '') {
-    return task.taskNo;
+function getResultTaskNumber(task) {
+  if (task.partNo !== undefined && task.partNo !== null && String(task.partNo).trim() !== '') {
+    return task.partNo;
   }
 
-  const id = String(task.id ?? '').trim();
-  const leadingNumber = id.match(/^\d+/)?.[0];
-  if (leadingNumber) return stripLeadingZeroes(leadingNumber);
-
-  const embeddedNumber = id.match(/\d+/)?.[0];
-  return embeddedNumber ? stripLeadingZeroes(embeddedNumber) : id;
-}
-
-function stripLeadingZeroes(value) {
-  return String(Number(value)) || value;
+  return task.id;
 }
 
 function getDefaultScoring(type) {
