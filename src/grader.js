@@ -1,5 +1,19 @@
 export function gradeVariant(variant, answers) {
-  const taskResults = variant.tasks.map((task, index) => gradeVariantTask(task, index, answers));
+  const taskResults = variant.tasks.map((task, index) => {
+    const userAnswer = answers[task.id] ?? null;
+    const result = gradeTask(task, userAnswer, answers);
+
+    return {
+      number: index + 1,
+      taskId: task.id,
+      title: task.title,
+      maxScore: task.maxScore,
+      userAnswer,
+      correctAnswer: task.answer,
+      correctAnswerText: formatCorrectAnswer(task),
+      ...result,
+    };
+  });
 
   const score = taskResults.reduce((sum, item) => sum + item.score, 0);
   const maxScore = variant.maxScore;
@@ -12,43 +26,6 @@ export function gradeVariant(variant, answers) {
     percent,
     mark,
     taskResults,
-  };
-}
-
-function gradeVariantTask(task, index, answers) {
-  const parts = getTaskParts(task);
-  const partResults = parts.map((part) => gradePartTask(part, answers));
-  const usesGroupedScoring = hasParts(task) && task.scoring;
-  const groupScore = usesGroupedScoring
-    ? gradeTask(task, buildGroupAnswer(task, answers), answers).score
-    : partResults.reduce((sum, item) => sum + item.score, 0);
-
-  return {
-    number: index + 1,
-    taskId: task.id,
-    title: task.title,
-    maxScore: task.maxScore,
-    score: groupScore,
-    status: getStatus(groupScore, task.maxScore),
-    errors: partResults.reduce((sum, item) => sum + item.errors, 0),
-    partResults,
-  };
-}
-
-function gradePartTask(task, answers) {
-  const userAnswer = answers[task.id] ?? getEmptyAnswer(task);
-  const result = gradeTask(task, userAnswer, answers);
-
-  return {
-    number: task.id,
-    taskId: task.id,
-    title: task.title,
-    maxScore: task.maxScore,
-    userAnswer,
-    correctAnswer: task.answer,
-    correctDisplay: task.correctDisplay ?? task.correctAnswerText ?? null,
-    correctAnswerText: formatCorrectAnswer(task),
-    ...result,
   };
 }
 
@@ -182,13 +159,10 @@ export function gradeDependentCriterion(task, userAnswer, allAnswers = {}) {
 
 export function getMark(score, gradeScale = []) {
   const matched = gradeScale.find((item) => score >= item.min && score <= item.max);
-  return matched ? (matched.mark ?? matched.grade) : '—';
+  return matched ? matched.mark : '—';
 }
 
 export function formatCorrectAnswer(task) {
-  const display = task.correctDisplay ?? task.correctAnswerText;
-  if (display && typeof display !== 'object') return display;
-
   switch (task.type) {
     case 'singleChoice':
     case 'dropdown':
@@ -197,39 +171,15 @@ export function formatCorrectAnswer(task) {
       return task.answer.map((id) => getOptionLabel(task.options, id)).join('; ');
     case 'dropdownGroup':
       return task.items
-        .map((item) => `${item.label}: ${display?.[item.id] ?? getOptionLabel(getDropdownOptions(task, item), task.answer[item.id])}`)
+        .map((item) => `${item.label}: ${getOptionLabel(getDropdownOptions(task, item), task.answer[item.id])}`)
         .join('; ');
     case 'dragToSlots':
       return task.slots
-        .map((slot) => `${slot.label}: ${display?.[slot.id] ?? getCardLabel(task.cards, task.answer[slot.id])}`)
+        .map((slot) => `${slot.label}: ${getCardLabel(task.cards, task.answer[slot.id])}`)
         .join('; ');
     default:
       return 'Нет данных';
   }
-}
-
-function getTaskParts(task) {
-  return hasParts(task) ? task.parts : [task];
-}
-
-function hasParts(task) {
-  return Array.isArray(task.parts) && task.parts.length > 0;
-}
-
-function buildGroupAnswer(task, answers) {
-  return Object.fromEntries(getTaskParts(task).map((part) => [part.id, answers[part.id] ?? getEmptyAnswer(part)]));
-}
-
-function getEmptyAnswer(task) {
-  if (task.type === 'multipleChoice') return [];
-  if (task.type === 'dropdownGroup' || task.type === 'dragToSlots') return {};
-  return null;
-}
-
-function getStatus(score, maxScore) {
-  if (score === maxScore) return 'correct';
-  if (score > 0) return 'partial';
-  return 'wrong';
 }
 
 function getDefaultScoring(type) {
