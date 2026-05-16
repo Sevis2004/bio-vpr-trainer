@@ -1,10 +1,10 @@
 export function gradeVariant(variant, answers) {
-  const taskResults = variant.tasks.map((task, index) => {
+  const taskResults = variant.tasks.map((task) => {
     const userAnswer = answers[task.id] ?? null;
     const result = gradeTask(task, userAnswer, answers);
 
     return {
-      number: index + 1,
+      number: getDisplayTaskNumber(task),
       taskId: task.id,
       title: task.title,
       maxScore: task.maxScore,
@@ -180,6 +180,23 @@ export function formatCorrectAnswer(task) {
     default:
       return 'Нет данных';
   }
+}
+
+function getDisplayTaskNumber(task) {
+  if (task.taskNo !== undefined && task.taskNo !== null && String(task.taskNo).trim() !== '') {
+    return task.taskNo;
+  }
+
+  const id = String(task.id ?? '').trim();
+  const leadingNumber = id.match(/^\d+/)?.[0];
+  if (leadingNumber) return stripLeadingZeroes(leadingNumber);
+
+  const embeddedNumber = id.match(/\d+/)?.[0];
+  return embeddedNumber ? stripLeadingZeroes(embeddedNumber) : id;
+}
+
+function stripLeadingZeroes(value) {
+  return String(Number(value)) || value;
 }
 
 function getDefaultScoring(type) {

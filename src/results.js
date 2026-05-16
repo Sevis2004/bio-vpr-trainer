@@ -64,7 +64,7 @@ function renderStatus(status) {
   const statusMap = {
     correct: ['ok', 'Верно'],
     partial: ['partial', 'Частично верно'],
-    wrong: ['bad', 'Ошибка'],
+    wrong: ['bad', 'Неверно'],
   };
   const [className, label] = statusMap[status] ?? statusMap.wrong;
   return `<span class="badge ${className}">${label}</span>`;
