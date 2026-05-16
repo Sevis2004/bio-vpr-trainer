@@ -8,9 +8,10 @@ export function renderVariant(variant, container, onChange) {
     const card = document.createElement('article');
     card.className = 'task-card';
     card.dataset.taskId = task.id;
+    card.dataset.taskType = task.type;
     card.innerHTML = `
       <div class="task-head">
-        <div class="task-number">Задание ${escapeHtml(task.id ?? index + 1)}</div>
+        <div class="task-number">Задание ${index + 1}</div>
         <div class="task-points">${task.maxScore} ${formatPoints(task.maxScore)}</div>
       </div>
       <h2>${escapeHtml(task.title)}</h2>
@@ -19,7 +20,7 @@ export function renderVariant(variant, container, onChange) {
     `;
 
     const body = card.querySelector('.task-body');
-    renderTask(task, body, onChange);
+    renderTaskBody(task, body, onChange);
     fragment.append(card);
   });
 
@@ -28,20 +29,16 @@ export function renderVariant(variant, container, onChange) {
 
 export function readAnswers(variant, container) {
   return Object.fromEntries(
-    getGradableTasks(variant).map((task) => {
-      const taskElement = container.querySelector(`[data-answer-id="${CSS.escape(task.id)}"]`);
-      return [task.id, readTaskAnswer(task, taskElement)];
+    variant.tasks.map((task) => {
+      const card = container.querySelector(`[data-task-id="${CSS.escape(task.id)}"]`);
+      return [task.id, readTaskAnswer(task, card)];
     }),
   );
 }
 
 export function countAnsweredTasks(variant, container) {
   const answers = readAnswers(variant, container);
-
-  return variant.tasks.filter((task) => {
-    const parts = getTaskParts(task);
-    return parts.every((part) => isAnswered(part, answers[part.id]));
-  }).length;
+  return variant.tasks.filter((task) => isAnswered(task, answers[task.id])).length;
 }
 
 export function applyResults(container, result) {
@@ -56,10 +53,7 @@ export function applyResults(container, result) {
       control.disabled = true;
     });
 
-    taskResult.partResults.forEach((partResult) => {
-      const partElement = card.querySelector(`[data-answer-id="${CSS.escape(partResult.taskId)}"]`);
-      if (partElement) markCorrectAnswers(partElement, partResult);
-    });
+    markCorrectAnswers(card, taskResult);
   });
 }
 
@@ -72,33 +66,6 @@ export function clearResults(container) {
     card.querySelectorAll('.is-right-answer').forEach((element) => {
       element.classList.remove('is-right-answer');
     });
-    card.querySelectorAll('.badge.ok').forEach((badge) => {
-      badge.remove();
-    });
-  });
-}
-
-function renderTask(task, body, onChange) {
-  const parts = getTaskParts(task);
-
-  if (parts.length === 1 && parts[0] === task) {
-    body.dataset.answerId = task.id;
-    body.dataset.taskType = task.type;
-    renderTaskBody(task, body, onChange);
-    return;
-  }
-
-  parts.forEach((part) => {
-    const section = document.createElement('section');
-    section.className = 'task-part';
-    section.dataset.answerId = part.id;
-    section.dataset.taskType = part.type;
-    section.innerHTML = `
-      <h3>${escapeHtml(part.title)}</h3>
-      ${part.description ? `<p class="task-description">${escapeHtml(part.description)}</p>` : ''}
-    `;
-    renderTaskBody(part, section, onChange);
-    body.append(section);
   });
 }
 
@@ -120,7 +87,7 @@ function renderTaskBody(task, body, onChange) {
       renderDragToSlots(task, body, onChange);
       break;
     default:
-      body.insertAdjacentHTML('beforeend', '<div class="empty-state">Неизвестный тип задания.</div>');
+      body.innerHTML = '<div class="empty-state">Неизвестный тип задания.</div>';
   }
 }
 
@@ -226,22 +193,20 @@ function renderDragToSlots(task, body, onChange) {
   setupDragToSlots(board, onChange);
 }
 
-function readTaskAnswer(task, taskElement) {
-  if (!taskElement) return getEmptyAnswer(task);
-
+function readTaskAnswer(task, card) {
   switch (task.type) {
     case 'singleChoice':
-      return taskElement.querySelector('input:checked')?.value ?? null;
+      return card.querySelector('input:checked')?.value ?? null;
     case 'multipleChoice':
-      return Array.from(taskElement.querySelectorAll('input:checked')).map((input) => input.value);
+      return Array.from(card.querySelectorAll('input:checked')).map((input) => input.value);
     case 'dropdown':
-      return taskElement.querySelector('select')?.value || null;
+      return card.querySelector('select')?.value || null;
     case 'dropdownGroup':
       return Object.fromEntries(
-        Array.from(taskElement.querySelectorAll('select')).map((select) => [select.name, select.value || null]),
+        Array.from(card.querySelectorAll('select')).map((select) => [select.name, select.value || null]),
       );
     case 'dragToSlots':
-      return readDragAnswer(taskElement);
+      return readDragAnswer(card);
     default:
       return null;
   }
@@ -264,42 +229,37 @@ function isAnswered(task, answer) {
   }
 }
 
-function markCorrectAnswers(taskElement, taskResult) {
+function markCorrectAnswers(card, taskResult) {
   const correctAnswer = taskResult.correctAnswer;
 
-  if (taskElement.dataset.taskType === 'singleChoice' || taskElement.dataset.taskType === 'multipleChoice') {
+  if (card.dataset.taskType === 'singleChoice' || card.dataset.taskType === 'multipleChoice') {
     const answerIds = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
     answerIds.forEach((id) => {
-      taskElement.querySelector(`[data-option-id="${CSS.escape(id)}"]`)?.classList.add('is-right-answer');
+      card.querySelector(`[data-option-id="${CSS.escape(id)}"]`)?.classList.add('is-right-answer');
     });
-    const answerText = taskResult.correctDisplay ?? taskResult.correctAnswerText ?? answerIds.join('; ');
-    taskElement.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(answerText)}</div>`);
     return;
   }
 
-  if (taskElement.dataset.taskType === 'dropdown') {
-    const select = taskElement.querySelector('select');
-    const optionText = taskResult.correctDisplay ?? select?.querySelector(`option[value="${CSS.escape(correctAnswer)}"]`)?.textContent ?? correctAnswer;
+  if (card.dataset.taskType === 'dropdown') {
+    const select = card.querySelector('select');
+    const optionText = select?.querySelector(`option[value="${CSS.escape(correctAnswer)}"]`)?.textContent ?? correctAnswer;
     select?.closest('.dropdown-item')?.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(optionText)}</div>`);
     return;
   }
 
-  if (taskElement.dataset.taskType === 'dropdownGroup') {
+  if (card.dataset.taskType === 'dropdownGroup') {
     Object.entries(correctAnswer).forEach(([itemId, optionId]) => {
-      const item = taskElement.querySelector(`[data-item-id="${CSS.escape(itemId)}"]`);
+      const item = card.querySelector(`[data-item-id="${CSS.escape(itemId)}"]`);
       const select = item?.querySelector('select');
-      const optionText = getDisplayForItem(taskResult.correctDisplay, itemId)
-        ?? select?.querySelector(`option[value="${CSS.escape(optionId)}"]`)?.textContent
-        ?? optionId;
+      const optionText = select?.querySelector(`option[value="${CSS.escape(optionId)}"]`)?.textContent ?? optionId;
       item?.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(optionText)}</div>`);
     });
     return;
   }
 
-  if (taskElement.dataset.taskType === 'dragToSlots') {
-    taskElement.querySelectorAll('[data-dnd-slot]').forEach((slot) => {
-      const slotId = slot.dataset.slotId;
-      const expectedCard = getDisplayForItem(taskResult.correctDisplay, slotId) ?? correctAnswer[slotId];
+  if (card.dataset.taskType === 'dragToSlots') {
+    card.querySelectorAll('[data-dnd-slot]').forEach((slot) => {
+      const expectedCard = correctAnswer[slot.dataset.slotId];
       slot.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(expectedCard)}</div>`);
     });
   }
@@ -312,25 +272,6 @@ function renderStrictHint(task, body) {
   hint.className = 'task-description';
   hint.textContent = task.strictHint;
   body.append(hint);
-}
-
-function getTaskParts(task) {
-  return Array.isArray(task.parts) && task.parts.length > 0 ? task.parts : [task];
-}
-
-function getGradableTasks(variant) {
-  return variant.tasks.flatMap((task) => getTaskParts(task));
-}
-
-function getEmptyAnswer(task) {
-  if (task.type === 'multipleChoice') return [];
-  if (task.type === 'dropdownGroup' || task.type === 'dragToSlots') return {};
-  return null;
-}
-
-function getDisplayForItem(correctDisplay, itemId) {
-  if (!correctDisplay || typeof correctDisplay !== 'object') return correctDisplay ?? null;
-  return correctDisplay[itemId] ?? null;
 }
 
 function getDropdownOptions(task, item) {

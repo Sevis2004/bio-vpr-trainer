@@ -1,6 +1,5 @@
 export function renderResults(result, container) {
   const rows = result.taskResults
-    .flatMap((task) => task.partResults ?? [task])
     .filter((task) => task.status !== 'correct')
     .map((task) => renderErrorRow(task))
     .join('');
@@ -52,7 +51,7 @@ export function clearResultsPanel(container) {
 function renderErrorRow(task) {
   return `
     <tr>
-      <td>${escapeHtml(task.number)}</td>
+      <td>${task.number}</td>
       <td>${task.score}</td>
       <td>${task.maxScore}</td>
       <td>${renderStatus(task.status)}</td>
