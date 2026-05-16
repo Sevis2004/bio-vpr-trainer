@@ -77,6 +77,9 @@ function renderTaskBody(task, body, onChange) {
     case 'multipleChoice':
       renderChoice(task, body, 'checkbox', onChange);
       break;
+    case 'dropdown':
+      renderDropdown(task, body, onChange);
+      break;
     case 'dropdownGroup':
       renderDropdownGroup(task, body, onChange);
       break;
@@ -108,7 +111,27 @@ function renderChoice(task, body, inputType, onChange) {
   body.append(options);
 }
 
+function renderDropdown(task, body, onChange) {
+  renderStrictHint(task, body);
+
+  const wrapper = document.createElement('label');
+  wrapper.className = 'dropdown-item';
+  wrapper.innerHTML = `
+    <strong>${escapeHtml(task.label ?? 'Ответ')}</strong>
+    <select class="task-select" name="${escapeAttribute(task.id)}">
+      <option value="">${escapeHtml(getPlaceholder(task))}</option>
+      ${task.options
+        .map((option) => `<option value="${escapeAttribute(option.id)}">${escapeHtml(option.label)}</option>`)
+        .join('')}
+    </select>
+  `;
+  wrapper.querySelector('select').addEventListener('change', onChange);
+  body.append(wrapper);
+}
+
 function renderDropdownGroup(task, body, onChange) {
+  renderStrictHint(task, body);
+
   const grid = document.createElement('div');
   grid.className = 'dropdown-grid';
 
@@ -119,8 +142,8 @@ function renderDropdownGroup(task, body, onChange) {
     wrapper.innerHTML = `
       <strong>${escapeHtml(item.label)}</strong>
       <select class="task-select" name="${escapeAttribute(item.id)}">
-        <option value="">Выберите ответ</option>
-        ${item.options
+        <option value="">${escapeHtml(getPlaceholder(task))}</option>
+        ${getDropdownOptions(task, item)
           .map((option) => `<option value="${escapeAttribute(option.id)}">${escapeHtml(option.label)}</option>`)
           .join('')}
       </select>
@@ -176,6 +199,8 @@ function readTaskAnswer(task, card) {
       return card.querySelector('input:checked')?.value ?? null;
     case 'multipleChoice':
       return Array.from(card.querySelectorAll('input:checked')).map((input) => input.value);
+    case 'dropdown':
+      return card.querySelector('select')?.value || null;
     case 'dropdownGroup':
       return Object.fromEntries(
         Array.from(card.querySelectorAll('select')).map((select) => [select.name, select.value || null]),
@@ -193,6 +218,8 @@ function isAnswered(task, answer) {
       return Boolean(answer);
     case 'multipleChoice':
       return Array.isArray(answer) && answer.length > 0;
+    case 'dropdown':
+      return Boolean(answer);
     case 'dropdownGroup':
       return Object.values(answer ?? {}).every(Boolean);
     case 'dragToSlots':
@@ -213,6 +240,13 @@ function markCorrectAnswers(card, taskResult) {
     return;
   }
 
+  if (card.dataset.taskType === 'dropdown') {
+    const select = card.querySelector('select');
+    const optionText = select?.querySelector(`option[value="${CSS.escape(correctAnswer)}"]`)?.textContent ?? correctAnswer;
+    select?.closest('.dropdown-item')?.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(optionText)}</div>`);
+    return;
+  }
+
   if (card.dataset.taskType === 'dropdownGroup') {
     Object.entries(correctAnswer).forEach(([itemId, optionId]) => {
       const item = card.querySelector(`[data-item-id="${CSS.escape(itemId)}"]`);
@@ -229,6 +263,23 @@ function markCorrectAnswers(card, taskResult) {
       slot.insertAdjacentHTML('beforeend', `<div class="badge ok">Верно: ${escapeHtml(expectedCard)}</div>`);
     });
   }
+}
+
+function renderStrictHint(task, body) {
+  if (!task.strictHint) return;
+
+  const hint = document.createElement('p');
+  hint.className = 'task-description';
+  hint.textContent = task.strictHint;
+  body.append(hint);
+}
+
+function getDropdownOptions(task, item) {
+  return item.options ?? task.optionsBySlot?.[item.id] ?? task.options ?? [];
+}
+
+function getPlaceholder(task) {
+  return task.placeholder ?? 'Выберите ответ';
 }
 
 function statusClass(status) {
