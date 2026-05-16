@@ -253,6 +253,10 @@
         margin-right: auto;
       }
 
+      .media-tiny {
+        width: min(30%, 300px);
+      }
+
       .media-small {
         width: min(42%, 420px);
       }
@@ -265,7 +269,12 @@
         width: min(100%, 940px);
       }
 
-      .media-layout-row {
+      .media-full {
+        width: 100%;
+      }
+
+      .media-layout-row,
+      .media-layout-side-by-side {
         display: flex;
         flex-wrap: wrap;
         gap: 16px;
@@ -273,25 +282,144 @@
         justify-content: center;
       }
 
-      .media-layout-row .media-figure {
+      .media-layout-row .media-figure,
+      .media-layout-side-by-side .media-figure {
         flex: 0 1 var(--media-row-item-width, 260px);
       }
 
-      .media-layout-tissueSet {
-        display: flex;
-        flex-wrap: wrap;
+      .media-layout-column,
+      .media-layout-image-with-slots {
+        display: grid;
         gap: 14px;
-        align-items: flex-start;
+        justify-items: center;
+      }
+
+      .media-layout-tissueSet {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(120px, 1fr));
+        gap: 14px;
+        align-items: start;
         justify-content: center;
       }
 
       .media-layout-tissueSet .media-figure:first-child {
-        flex-basis: 100%;
+        grid-column: 1 / -1;
+        justify-self: center;
       }
 
       .media-layout-tissueSet .media-figure:not(:first-child) {
-        flex: 1 1 120px;
-        max-width: 160px;
+        display: grid;
+        grid-template-rows: 150px auto;
+        justify-items: center;
+        align-items: center;
+        width: 100%;
+        max-width: 170px;
+        justify-self: center;
+      }
+
+      .media-layout-tissueSet .media-figure:not(:first-child) img {
+        max-height: 150px;
+        object-fit: contain;
+      }
+
+
+      .task-part[data-task-id="7.1"] .task-media {
+        justify-items: center;
+      }
+
+      .task-part[data-task-id="7.1"] .media-figure {
+        width: fit-content;
+        max-width: min(100%, 520px);
+      }
+
+      .task-part[data-task-id="7.2"] .media-layout-row {
+        align-items: flex-end;
+      }
+
+      .task-part[data-task-id="7.2"] .media-figure {
+        flex-basis: 180px;
+        max-width: 180px;
+      }
+
+      .task-part[data-task-id="7.2"] .media-figure img {
+        max-height: 170px;
+        object-fit: contain;
+      }
+
+      .task-card[data-task-no="9"] .task-group-media .media-figure {
+        width: min(21%, 210px);
+      }
+
+      .task-part[data-task-id="10.1"] .task-intro-media-layout {
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 0.8fr);
+      }
+
+      .task-part[data-task-id="10.1"] .media-figure {
+        width: min(100%, 520px);
+      }
+
+      .task-part[data-task-id="11.1"] .media-figure {
+        width: min(36%, 360px);
+      }
+
+      .task-part[data-task-id="11.2"] .media-figure,
+      .task-part[data-task-id="11.3"] .media-figure {
+        width: min(55%, 550px);
+      }
+
+      .task-part[data-task-id="12К1"] .dropdown-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
+      }
+
+      .task-part[data-task-id="12К1"] .dropdown-item {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        min-width: 0;
+      }
+
+      .task-part[data-task-id="12К1"] .dropdown-item .media-figure {
+        display: grid;
+        grid-template-rows: 240px auto;
+        align-items: center;
+        justify-items: center;
+        width: 100%;
+      }
+
+      .task-part[data-task-id="12К1"] .dropdown-item img {
+        width: 100%;
+        max-height: 240px;
+        object-fit: contain;
+      }
+
+      .task-card[data-task-no="14"] .task-group-media .media-figure:first-child {
+        width: min(21%, 210px);
+      }
+
+      .task-card[data-task-no="15"] .media-layout-row {
+        align-items: end;
+      }
+
+      .task-card[data-task-no="15"] .media-figure {
+        display: grid;
+        grid-template-rows: 260px auto;
+        align-items: end;
+        justify-items: center;
+        flex: 0 1 320px;
+        width: 100%;
+      }
+
+      .task-card[data-task-no="15"] .media-figure img {
+        max-height: 260px;
+        object-fit: contain;
+      }
+
+      .task-card[data-task-no="15"] .media-figure:first-child img {
+        width: min(100%, 300px);
+      }
+
+      .task-card[data-task-no="15"] .media-figure:nth-child(2) img {
+        max-height: 240px;
       }
 
       .task-part {
@@ -388,8 +516,14 @@
       }
 
       .image-dnd-layout {
-        grid-template-columns: minmax(220px, 1fr) minmax(160px, 0.45fr);
-        align-items: start;
+        grid-template-columns: minmax(220px, 0.78fr) minmax(130px, 180px);
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .image-dnd-layout .image-dnd-media {
+        justify-self: end;
       }
 
       .image-dnd-layout .dnd-controls {
@@ -398,6 +532,37 @@
 
       .image-dnd-layout .dnd-slots {
         grid-template-columns: 1fr;
+        align-self: stretch;
+        align-content: space-around;
+        gap: 18px;
+        padding-left: 22px;
+      }
+
+      .image-dnd-layout .dnd-slot {
+        position: relative;
+      }
+
+      .image-dnd-layout .dnd-slot::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: calc(100% + 2px);
+        width: 24px;
+        height: 2px;
+        background: var(--brand);
+        transform: translateY(-50%);
+      }
+
+      .image-dnd-layout .dnd-slot::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: calc(100% + 20px);
+        width: 8px;
+        height: 8px;
+        border-bottom: 2px solid var(--brand);
+        border-left: 2px solid var(--brand);
+        transform: translateY(-50%) rotate(45deg);
       }
 
       .dnd-bank,
@@ -622,15 +787,31 @@
           flex: 1 1 160px;
         }
 
+        .media-tiny,
         .media-small,
         .media-medium {
           width: min(100%, 520px);
         }
 
+        .media-layout-tissueSet,
+        .task-part[data-task-id="12К1"] .dropdown-grid {
+          grid-template-columns: 1fr;
+        }
+
         .task-intro-media-layout,
         .task-media-body-layout,
-        .image-dnd-layout {
+        .image-dnd-layout,
+        .task-part[data-task-id="10.1"] .task-intro-media-layout {
           grid-template-columns: 1fr;
+        }
+
+        .image-dnd-layout .image-dnd-media {
+          justify-self: center;
+        }
+
+        .image-dnd-layout .dnd-slots {
+          max-width: 260px;
+          margin: 0 auto;
         }
       }
     </style>
