@@ -24,6 +24,7 @@ export function renderVariant(variant, container, onChange) {
       part.dataset.taskType = task.type;
       part.innerHTML = `<h3>${escapeHtml(task.title)}</h3>`;
 
+      renderTables(task.tables, part);
       renderMedia(task.media ?? task.image, part, 'task-media');
 
       if (task.description) {
@@ -129,7 +130,7 @@ function stripLeadingZeroes(value) {
 }
 
 function renderTaskGroupMeta(groupMeta, card) {
-  if (!groupMeta?.description && !groupMeta?.image && !groupMeta?.media) return;
+  if (!groupMeta?.description && !groupMeta?.tables && !groupMeta?.image && !groupMeta?.media) return;
 
   const intro = document.createElement('div');
   intro.className = 'task-group-intro';
@@ -141,9 +142,76 @@ function renderTaskGroupMeta(groupMeta, card) {
     intro.append(description);
   }
 
+  renderTables(groupMeta.tables, intro);
   renderMedia(groupMeta.media ?? groupMeta.image, intro, 'task-group-media', groupMeta.imageAlt);
 
   card.append(intro);
+}
+
+function renderTables(tables, container) {
+  const tableItems = normalizeTables(tables);
+  if (tableItems.length === 0) return;
+
+  tableItems.forEach((tableData) => {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'task-table-wrapper';
+    wrapper.style.overflowX = 'auto';
+    wrapper.style.maxWidth = '100%';
+
+    const table = document.createElement('table');
+    table.className = 'task-table';
+    table.style.width = '100%';
+    table.style.borderCollapse = 'collapse';
+
+    if (tableData.caption) {
+      const caption = document.createElement('caption');
+      caption.textContent = tableData.caption;
+      table.append(caption);
+    }
+
+    if (Array.isArray(tableData.headers) && tableData.headers.length > 0) {
+      const thead = document.createElement('thead');
+      const row = document.createElement('tr');
+      tableData.headers.forEach((header) => {
+        const cell = document.createElement('th');
+        cell.scope = 'col';
+        cell.textContent = header;
+        applyTableCellStyles(cell);
+        row.append(cell);
+      });
+      thead.append(row);
+      table.append(thead);
+    }
+
+    const tbody = document.createElement('tbody');
+    tableData.rows.forEach((rowData) => {
+      const row = document.createElement('tr');
+      rowData.forEach((value) => {
+        const cell = document.createElement('td');
+        cell.textContent = value;
+        applyTableCellStyles(cell);
+        row.append(cell);
+      });
+      tbody.append(row);
+    });
+    table.append(tbody);
+
+    wrapper.append(table);
+    container.append(wrapper);
+  });
+}
+
+function normalizeTables(tables) {
+  if (!tables) return [];
+  const tableItems = Array.isArray(tables) ? tables : [tables];
+
+  return tableItems.filter((table) => Array.isArray(table?.rows));
+}
+
+function applyTableCellStyles(cell) {
+  cell.style.border = '1px solid var(--border, #d0d7de)';
+  cell.style.padding = '0.5rem';
+  cell.style.textAlign = 'left';
 }
 
 function renderMedia(media, container, className, fallbackAlt = '') {
