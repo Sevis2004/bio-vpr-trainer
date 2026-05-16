@@ -151,17 +151,17 @@
         box-shadow: 0 8px 20px rgba(25, 48, 38, 0.06);
       }
 
-      .task-card.is-correct {
+      .task-part.is-correct {
         border-color: rgba(15, 111, 63, 0.35);
         background: linear-gradient(0deg, rgba(236, 253, 243, 0.65), rgba(255, 255, 255, 0.92));
       }
 
-      .task-card.is-partial {
+      .task-part.is-partial {
         border-color: rgba(161, 92, 7, 0.35);
         background: linear-gradient(0deg, rgba(255, 248, 230, 0.72), rgba(255, 255, 255, 0.92));
       }
 
-      .task-card.is-wrong {
+      .task-part.is-wrong {
         border-color: rgba(180, 35, 24, 0.35);
         background: linear-gradient(0deg, rgba(255, 241, 240, 0.72), rgba(255, 255, 255, 0.92));
       }
@@ -185,9 +185,38 @@
         font-weight: 700;
       }
 
-      .task-card h2 {
+      .task-group-intro {
+        display: grid;
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+
+      .task-group-intro p {
+        margin: 0;
+        color: var(--text);
+      }
+
+      .task-group-intro img {
+        max-width: min(100%, 520px);
+        height: auto;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #fff;
+      }
+
+      .task-part {
+        padding: 16px;
+        border: 1px solid transparent;
+        border-radius: 18px;
+      }
+
+      .task-part + .task-part {
+        margin-top: 14px;
+      }
+
+      .task-part h3 {
         margin: 0 0 10px;
-        font-size: 1.2rem;
+        font-size: 1.08rem;
       }
 
       .task-description {

@@ -4,22 +4,35 @@ export function renderVariant(variant, container, onChange) {
   container.innerHTML = '';
   const fragment = document.createDocumentFragment();
 
-  variant.tasks.forEach((task) => {
+  getTaskGroups(variant).forEach((group) => {
+    const groupNumber = getTaskGroupNumber(group[0]);
     const card = document.createElement('article');
     card.className = 'task-card';
-    card.dataset.taskId = task.id;
-    card.dataset.taskType = task.type;
+    card.dataset.taskNo = groupNumber;
     card.innerHTML = `
       <div class="task-head">
-        <div class="task-number">Задание ${escapeHtml(getDisplayTaskNumber(task))}</div>
+        <div class="task-number">Задание ${escapeHtml(groupNumber)}</div>
       </div>
-      <h2>${escapeHtml(task.title)}</h2>
-      ${task.description ? `<p class="task-description">${escapeHtml(task.description)}</p>` : ''}
-      <div class="task-body"></div>
     `;
 
-    const body = card.querySelector('.task-body');
-    renderTaskBody(task, body, onChange);
+    renderGroupIntro(variant.groupMeta?.[groupNumber], card);
+
+    group.forEach((task) => {
+      const part = document.createElement('section');
+      part.className = 'task-part';
+      part.dataset.taskId = task.id;
+      part.dataset.taskType = task.type;
+      part.innerHTML = `
+        <h3>${escapeHtml(task.title)}</h3>
+        ${task.description ? `<p class="task-description">${escapeHtml(task.description)}</p>` : ''}
+        <div class="task-body"></div>
+      `;
+
+      const body = part.querySelector('.task-body');
+      renderTaskBody(task, body, onChange);
+      card.append(part);
+    });
+
     fragment.append(card);
   });
 
@@ -29,8 +42,8 @@ export function renderVariant(variant, container, onChange) {
 export function readAnswers(variant, container) {
   return Object.fromEntries(
     variant.tasks.map((task) => {
-      const card = container.querySelector(`[data-task-id="${CSS.escape(task.id)}"]`);
-      return [task.id, readTaskAnswer(task, card)];
+      const part = container.querySelector(`.task-part[data-task-id="${CSS.escape(task.id)}"]`);
+      return [task.id, readTaskAnswer(task, part)];
     }),
   );
 }
@@ -48,28 +61,28 @@ export function applyResults(container, result) {
   clearResults(container);
 
   result.taskResults.forEach((taskResult) => {
-    const card = container.querySelector(`[data-task-id="${CSS.escape(taskResult.taskId)}"]`);
-    if (!card) return;
+    const part = container.querySelector(`.task-part[data-task-id="${CSS.escape(taskResult.taskId)}"]`);
+    if (!part) return;
 
-    card.classList.add(statusClass(taskResult.status));
-    card.querySelectorAll('input, select, button').forEach((control) => {
+    part.classList.add(statusClass(taskResult.status));
+    part.querySelectorAll('input, select, button').forEach((control) => {
       control.disabled = true;
     });
 
-    markCorrectAnswers(card, taskResult);
+    markCorrectAnswers(part, taskResult);
   });
 }
 
 export function clearResults(container) {
-  container.querySelectorAll('.task-card').forEach((card) => {
-    card.classList.remove('is-correct', 'is-partial', 'is-wrong');
-    card.querySelectorAll('input, select, button').forEach((control) => {
+  container.querySelectorAll('.task-part').forEach((part) => {
+    part.classList.remove('is-correct', 'is-partial', 'is-wrong');
+    part.querySelectorAll('input, select, button').forEach((control) => {
       control.disabled = false;
     });
-    card.querySelectorAll('.is-right-answer').forEach((element) => {
+    part.querySelectorAll('.is-right-answer').forEach((element) => {
       element.classList.remove('is-right-answer');
     });
-    card.querySelectorAll('.correct-answer-summary, .answer-badge').forEach((element) => {
+    part.querySelectorAll('.correct-answer-summary, .answer-badge').forEach((element) => {
       element.remove();
     });
   });
@@ -102,21 +115,20 @@ function getTaskGroupNumber(task) {
   return embeddedNumber ? stripLeadingZeroes(embeddedNumber) : id;
 }
 
-function getDisplayTaskNumber(task) {
-  if (task.taskNo !== undefined && task.taskNo !== null && String(task.taskNo).trim() !== '') {
-    return task.taskNo;
-  }
-
-  const id = String(task.id ?? '').trim();
-  const leadingNumber = id.match(/^\d+/)?.[0];
-  if (leadingNumber) return stripLeadingZeroes(leadingNumber);
-
-  const embeddedNumber = id.match(/\d+/)?.[0];
-  return embeddedNumber ? stripLeadingZeroes(embeddedNumber) : id;
-}
-
 function stripLeadingZeroes(value) {
   return String(Number(value)) || value;
+}
+
+function renderGroupIntro(groupMeta, card) {
+  if (!groupMeta?.description && !groupMeta?.image) return;
+
+  const intro = document.createElement('div');
+  intro.className = 'task-group-intro';
+  intro.innerHTML = `
+    ${groupMeta.description ? `<p>${escapeHtml(groupMeta.description)}</p>` : ''}
+    ${groupMeta.image ? `<img src="${escapeAttribute(groupMeta.image)}" alt="${escapeAttribute(groupMeta.alt ?? '')}" />` : ''}
+  `;
+  card.append(intro);
 }
 
 function renderTaskBody(task, body, onChange) {
@@ -244,20 +256,22 @@ function renderDragToSlots(task, body, onChange) {
   setupDragToSlots(board, onChange);
 }
 
-function readTaskAnswer(task, card) {
+function readTaskAnswer(task, part) {
+  if (!part) return null;
+
   switch (task.type) {
     case 'singleChoice':
-      return card.querySelector('input:checked')?.value ?? null;
+      return part.querySelector('input:checked')?.value ?? null;
     case 'multipleChoice':
-      return Array.from(card.querySelectorAll('input:checked')).map((input) => input.value);
+      return Array.from(part.querySelectorAll('input:checked')).map((input) => input.value);
     case 'dropdown':
-      return card.querySelector('select')?.value || null;
+      return part.querySelector('select')?.value || null;
     case 'dropdownGroup':
       return Object.fromEntries(
-        Array.from(card.querySelectorAll('select')).map((select) => [select.name, select.value || null]),
+        Array.from(part.querySelectorAll('select')).map((select) => [select.name, select.value || null]),
       );
     case 'dragToSlots':
-      return readDragAnswer(card);
+      return readDragAnswer(part);
     default:
       return null;
   }
