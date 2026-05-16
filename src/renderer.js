@@ -15,6 +15,8 @@ export function renderVariant(variant, container, onChange) {
       </div>
     `;
 
+    renderTaskGroupMeta(variant.groupMeta?.[groupNumber], card);
+
     group.forEach((task) => {
       const part = document.createElement('section');
       part.className = 'task-part';
@@ -116,6 +118,28 @@ function getTaskGroupNumber(task) {
 
 function stripLeadingZeroes(value) {
   return String(Number(value)) || value;
+}
+
+function renderTaskGroupMeta(groupMeta, card) {
+  if (!groupMeta?.description && !groupMeta?.image) return;
+
+  const intro = document.createElement('div');
+  intro.className = 'task-group-intro';
+
+  if (groupMeta.description) {
+    const description = document.createElement('p');
+    description.textContent = groupMeta.description;
+    intro.append(description);
+  }
+
+  if (groupMeta.image) {
+    const image = document.createElement('img');
+    image.src = groupMeta.image;
+    image.alt = groupMeta.imageAlt ?? '';
+    intro.append(image);
+  }
+
+  card.append(intro);
 }
 
 function renderTaskBody(task, body, onChange) {

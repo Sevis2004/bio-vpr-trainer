@@ -29,7 +29,8 @@
   "groupMeta": {
     "1": {
       "description": "На представленном ниже рисунке ученик изобразил один из процессов жизнедеятельности растений. Рассмотрите рисунок и ответьте на вопросы.",
-      "image": "assets/bio6_variant_1/q01.png"
+      "image": "assets/bio6_variant_1/q01.png",
+      "imageAlt": "Схема процесса у цветковых растений"
     }
   },
   "tasks": [
@@ -64,8 +65,7 @@
         }
       ],
       "answer": "double_fertilization",
-      "scoring": "exact",
-      "image": "assets/bio6_variant_1/q01.png"
+      "scoring": "exact"
     },
     {
       "id": "1.2",
