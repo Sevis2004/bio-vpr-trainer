@@ -15,8 +15,6 @@ export function renderVariant(variant, container, onChange) {
       </div>
     `;
 
-    renderGroupIntro(variant.groupMeta?.[groupNumber], card);
-
     group.forEach((task) => {
       const part = document.createElement('section');
       part.className = 'task-part';
@@ -74,17 +72,18 @@ export function applyResults(container, result) {
 }
 
 export function clearResults(container) {
-  container.querySelectorAll('.task-part').forEach((part) => {
-    part.classList.remove('is-correct', 'is-partial', 'is-wrong');
-    part.querySelectorAll('input, select, button').forEach((control) => {
+  container.querySelectorAll('.task-card, .task-part').forEach((element) => {
+    element.classList.remove('is-correct', 'is-partial', 'is-wrong');
+    element.querySelectorAll('input, select, button').forEach((control) => {
       control.disabled = false;
     });
-    part.querySelectorAll('.is-right-answer').forEach((element) => {
-      element.classList.remove('is-right-answer');
-    });
-    part.querySelectorAll('.correct-answer-summary, .answer-badge').forEach((element) => {
-      element.remove();
-    });
+  });
+
+  container.querySelectorAll('.is-right-answer').forEach((element) => {
+    element.classList.remove('is-right-answer');
+  });
+  container.querySelectorAll('.correct-answer-summary, .answer-badge').forEach((element) => {
+    element.remove();
   });
 }
 
@@ -117,18 +116,6 @@ function getTaskGroupNumber(task) {
 
 function stripLeadingZeroes(value) {
   return String(Number(value)) || value;
-}
-
-function renderGroupIntro(groupMeta, card) {
-  if (!groupMeta?.description && !groupMeta?.image) return;
-
-  const intro = document.createElement('div');
-  intro.className = 'task-group-intro';
-  intro.innerHTML = `
-    ${groupMeta.description ? `<p>${escapeHtml(groupMeta.description)}</p>` : ''}
-    ${groupMeta.image ? `<img src="${escapeAttribute(groupMeta.image)}" alt="${escapeAttribute(groupMeta.alt ?? '')}" />` : ''}
-  `;
-  card.append(intro);
 }
 
 function renderTaskBody(task, body, onChange) {
@@ -294,20 +281,20 @@ function isAnswered(task, answer) {
   }
 }
 
-function markCorrectAnswers(card, taskResult) {
+function markCorrectAnswers(part, taskResult) {
   const correctAnswer = taskResult.correctAnswer;
 
-  appendResultSummary(card, taskResult);
+  appendResultSummary(part, taskResult);
 
-  if (card.dataset.taskType === 'singleChoice' || card.dataset.taskType === 'multipleChoice') {
+  if (part.dataset.taskType === 'singleChoice' || part.dataset.taskType === 'multipleChoice') {
     const answerIds = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
     answerIds.forEach((id) => {
-      card.querySelector(`[data-option-id="${CSS.escape(id)}"]`)?.classList.add('is-right-answer');
+      part.querySelector(`[data-option-id="${CSS.escape(id)}"]`)?.classList.add('is-right-answer');
     });
   }
 }
 
-function appendResultSummary(card, taskResult) {
+function appendResultSummary(part, taskResult) {
   const summary = document.createElement('div');
   summary.className = 'correct-answer-summary';
   summary.innerHTML = `
@@ -318,7 +305,7 @@ function appendResultSummary(card, taskResult) {
         : ''
     }
   `;
-  card.append(summary);
+  part.append(summary);
 }
 
 function renderResultBadge(taskResult) {
