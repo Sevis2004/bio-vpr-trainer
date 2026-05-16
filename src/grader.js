@@ -4,14 +4,13 @@ export function gradeVariant(variant, answers) {
     const result = gradeTask(task, userAnswer, answers);
 
     return {
-      number: task.partNo ?? task.taskNo ?? index + 1,
+      number: index + 1,
       taskId: task.id,
       title: task.title,
       maxScore: task.maxScore,
       userAnswer,
       correctAnswer: task.answer,
-      correctDisplay: task.correctDisplay,
-      correctAnswerText: formatCorrectAnswer(task),
+      correctAnswerText: task.correctDisplay ?? formatCorrectAnswer(task),
       ...result,
     };
   });
@@ -60,7 +59,7 @@ export function gradeTask(task, userAnswer, allAnswers = {}) {
 }
 
 export function gradeExact(task, userAnswer) {
-  const isCorrect = userAnswer === task.answer;
+  const isCorrect = answerMatches(task.answer, userAnswer);
 
   return {
     score: isCorrect ? task.maxScore : 0,
@@ -84,7 +83,7 @@ export function gradeSet(task, userAnswer = []) {
 export function gradePartialByErrors(task, userAnswer = {}) {
   const expectedEntries = Object.entries(task.answer);
   const errors = expectedEntries.reduce((count, [key, value]) => {
-    return count + (userAnswer?.[key] === value ? 0 : 1);
+    return count + (answerMatches(value, userAnswer?.[key]) ? 0 : 1);
   }, 0);
   const partialScore = task.partialScore ?? 1;
   const score = errors === 0 ? task.maxScore : errors === 1 ? partialScore : 0;
@@ -102,7 +101,7 @@ export function gradeDragByCorrectCount(task, userAnswer = {}) {
 
 export function gradeByCorrectCount(task, userAnswer = {}) {
   const correctCount = Object.entries(task.answer).reduce((count, [slotId, expectedValue]) => {
-    return count + (userAnswer?.[slotId] === expectedValue ? 1 : 0);
+    return count + (answerMatches(expectedValue, userAnswer?.[slotId]) ? 1 : 0);
   }, 0);
   const score = getScoreByCorrectCount(task, correctCount);
 
@@ -124,8 +123,8 @@ export function gradeTwoElements(task, userAnswer = {}) {
 export function gradeFirstElementRequired(task, userAnswer = {}) {
   const entries = Object.entries(task.answer);
   const [firstKey, firstValue] = entries[0] ?? [];
-  const firstCorrect = firstKey !== undefined && userAnswer?.[firstKey] === firstValue;
-  const secondCorrect = entries.slice(1).some(([key, value]) => userAnswer?.[key] === value);
+  const firstCorrect = firstKey !== undefined && answerMatches(firstValue, userAnswer?.[firstKey]);
+  const secondCorrect = entries.slice(1).some(([key, value]) => answerMatches(value, userAnswer?.[key]));
   const score = firstCorrect ? (secondCorrect ? task.maxScore : 1) : 0;
   const correctCount = Number(firstCorrect) + Number(secondCorrect);
 
@@ -145,11 +144,10 @@ export function gradeAllOrNothing(task, userAnswer = {}) {
 
 export function gradeDependentCriterion(task, userAnswer, allAnswers = {}) {
   const dependency = parseDependency(task.dependsOn);
-  const directDependencyAnswer = task.dependsOn ? allAnswers?.[task.dependsOn] : undefined;
-  const dependencyAnswer = directDependencyAnswer ?? (dependency ? allAnswers?.[dependency.taskId]?.[dependency.itemId] : undefined);
+  const dependencyAnswer = dependency ? allAnswers?.[dependency.taskId]?.[dependency.itemId] : undefined;
   const dependencyExpected = dependency ? task.dependsOnAnswer ?? task.dependencyAnswer : undefined;
   const dependencyCorrect = dependencyExpected !== undefined && dependencyAnswer === dependencyExpected;
-  const answerCorrect = userAnswer === task.answer;
+  const answerCorrect = answerMatches(task.answer, userAnswer);
   const isCorrect = dependencyCorrect && answerCorrect;
 
   return {
@@ -165,17 +163,15 @@ export function getMark(score, gradeScale = []) {
 }
 
 export function formatCorrectAnswer(task) {
-  if (task.correctDisplay) return task.correctDisplay;
-
   switch (task.type) {
     case 'singleChoice':
     case 'dropdown':
-      return getOptionLabel(task.options, task.answer);
+      return formatAnswerValue(task.options, task.answer);
     case 'multipleChoice':
       return task.answer.map((id) => getOptionLabel(task.options, id)).join('; ');
     case 'dropdownGroup':
       return task.items
-        .map((item) => `${item.label}: ${getOptionLabel(getDropdownOptions(task, item), task.answer[item.id])}`)
+        .map((item) => `${item.label}: ${formatAnswerValue(getDropdownOptions(task, item), task.answer[item.id])}`)
         .join('; ');
     case 'dragToSlots':
       return task.slots
@@ -216,11 +212,15 @@ function buildElementResult(task, score, errors, correctCount) {
 }
 
 function countCorrectElements(task, userAnswer = {}) {
-  return Object.entries(task.answer).reduce((count, [key, value]) => count + (userAnswer?.[key] === value ? 1 : 0), 0);
+  return Object.entries(task.answer).reduce((count, [key, value]) => {
+    return count + (answerMatches(value, userAnswer?.[key]) ? 1 : 0);
+  }, 0);
 }
 
 function countErrors(task, userAnswer = {}) {
-  return Object.entries(task.answer).reduce((count, [key, value]) => count + (userAnswer?.[key] === value ? 0 : 1), 0);
+  return Object.entries(task.answer).reduce((count, [key, value]) => {
+    return count + (answerMatches(value, userAnswer?.[key]) ? 0 : 1);
+  }, 0);
 }
 
 function parseDependency(value) {
@@ -241,6 +241,17 @@ function countSetErrors(expected, actual) {
   const missing = expected.filter((value) => !actual.includes(value)).length;
   const extra = actual.filter((value) => !expected.includes(value)).length;
   return missing + extra;
+}
+
+function formatAnswerValue(options, answer) {
+  if (Array.isArray(answer)) {
+    return answer.map((id) => getOptionLabel(options, id)).join(' / ');
+  }
+  return getOptionLabel(options, answer);
+}
+
+function answerMatches(expected, actual) {
+  return Array.isArray(expected) ? expected.includes(actual) : actual === expected;
 }
 
 function getDropdownOptions(task, item) {
