@@ -4,14 +4,14 @@ export function renderVariant(variant, container, onChange) {
   container.innerHTML = '';
   const fragment = document.createDocumentFragment();
 
-  variant.tasks.forEach((task, index) => {
+  variant.tasks.forEach((task) => {
     const card = document.createElement('article');
     card.className = 'task-card';
     card.dataset.taskId = task.id;
     card.dataset.taskType = task.type;
     card.innerHTML = `
       <div class="task-head">
-        <div class="task-number">Задание ${index + 1}</div>
+        <div class="task-number">Задание ${escapeHtml(getDisplayTaskNumber(task))}</div>
         <div class="task-points">${task.maxScore} ${formatPoints(task.maxScore)}</div>
       </div>
       <h2>${escapeHtml(task.title)}</h2>
@@ -70,6 +70,23 @@ export function clearResults(container) {
       element.remove();
     });
   });
+}
+
+function getDisplayTaskNumber(task) {
+  if (task.taskNo !== undefined && task.taskNo !== null && String(task.taskNo).trim() !== '') {
+    return task.taskNo;
+  }
+
+  const id = String(task.id ?? '').trim();
+  const leadingNumber = id.match(/^\d+/)?.[0];
+  if (leadingNumber) return stripLeadingZeroes(leadingNumber);
+
+  const embeddedNumber = id.match(/\d+/)?.[0];
+  return embeddedNumber ? stripLeadingZeroes(embeddedNumber) : id;
+}
+
+function stripLeadingZeroes(value) {
+  return String(Number(value)) || value;
 }
 
 function renderTaskBody(task, body, onChange) {
@@ -236,58 +253,38 @@ function isAnswered(task, answer) {
 function markCorrectAnswers(card, taskResult) {
   const correctAnswer = taskResult.correctAnswer;
 
-  if (['singleChoice', 'multipleChoice', 'dropdown', 'dropdownGroup'].includes(card.dataset.taskType)) {
-    appendCorrectAnswerSummary(card, taskResult.correctAnswerText);
-  }
+  appendResultSummary(card, taskResult);
 
   if (card.dataset.taskType === 'singleChoice' || card.dataset.taskType === 'multipleChoice') {
     const answerIds = Array.isArray(correctAnswer) ? correctAnswer : [correctAnswer];
     answerIds.forEach((id) => {
       card.querySelector(`[data-option-id="${CSS.escape(id)}"]`)?.classList.add('is-right-answer');
     });
-    return;
-  }
-
-  if (card.dataset.taskType === 'dropdown') {
-    const select = card.querySelector('select');
-    const optionText = getSelectedOptionText(select, correctAnswer);
-    select?.closest('.dropdown-item')?.insertAdjacentHTML('beforeend', `<div class="badge ok answer-badge">Верно: ${escapeHtml(optionText)}</div>`);
-    return;
-  }
-
-  if (card.dataset.taskType === 'dropdownGroup') {
-    Object.entries(correctAnswer).forEach(([itemId, optionId]) => {
-      const item = card.querySelector(`[data-item-id="${CSS.escape(itemId)}"]`);
-      const select = item?.querySelector('select');
-      const optionText = getSelectedOptionText(select, optionId);
-      item?.insertAdjacentHTML('beforeend', `<div class="badge ok answer-badge">Верно: ${escapeHtml(optionText)}</div>`);
-    });
-    return;
-  }
-
-  if (card.dataset.taskType === 'dragToSlots') {
-    card.querySelectorAll('[data-dnd-slot]').forEach((slot) => {
-      const expectedCard = correctAnswer[slot.dataset.slotId];
-      slot.insertAdjacentHTML('beforeend', `<div class="badge ok answer-badge">Верно: ${escapeHtml(expectedCard)}</div>`);
-    });
   }
 }
 
-function appendCorrectAnswerSummary(card, correctAnswerText) {
-  if (!correctAnswerText) return;
-
+function appendResultSummary(card, taskResult) {
   const summary = document.createElement('div');
   summary.className = 'correct-answer-summary';
-  summary.innerHTML = `<span class="badge ok">Правильный ответ: ${escapeHtml(correctAnswerText)}</span>`;
+  summary.innerHTML = `
+    <div>${renderResultBadge(taskResult)}</div>
+    ${
+      taskResult.correctAnswerText
+        ? `<div class="correct-answer-text">Правильный ответ: ${escapeHtml(taskResult.correctAnswerText)}</div>`
+        : ''
+    }
+  `;
   card.append(summary);
 }
 
-function getSelectedOptionText(select, answer) {
-  if (Array.isArray(answer)) {
-    return answer.map((id) => getSelectedOptionText(select, id)).join(' / ');
-  }
-
-  return select?.querySelector(`option[value="${CSS.escape(answer)}"]`)?.textContent ?? answer;
+function renderResultBadge(taskResult) {
+  const statusMap = {
+    correct: ['ok', 'Верно'],
+    partial: ['partial', `Частично верно: ${taskResult.score} из ${taskResult.maxScore} ${formatPoints(taskResult.maxScore)}`],
+    wrong: ['bad', 'Неверно'],
+  };
+  const [className, label] = statusMap[taskResult.status] ?? statusMap.wrong;
+  return `<span class="badge ${className} answer-badge">${escapeHtml(label)}</span>`;
 }
 
 function renderStrictHint(task, body) {

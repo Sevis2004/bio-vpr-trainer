@@ -81,7 +81,7 @@ async function loadVariant(variantId) {
     updateProgress();
   });
   updateProgress();
-  setStatus(`${variant.title}: ${variant.displayTaskCount ?? variant.tasks.length} заданий, максимум ${variant.maxScore} балла.`);
+  setStatus(`${variant.title}: ${variant.displayTaskCount ?? variant.tasks.length} заданий, максимум ${variant.maxScore} ${formatPoints(variant.maxScore)}.`);
 }
 
 function renderVariantSelect(variants) {
@@ -116,6 +116,12 @@ function validateVariant(variant) {
   if (tasksScore !== variant.maxScore) {
     console.warn(`Сумма баллов заданий (${tasksScore}) не равна maxScore варианта (${variant.maxScore}).`);
   }
+}
+
+function formatPoints(value) {
+  if (value === 1) return 'балл';
+  if (value >= 2 && value <= 4) return 'балла';
+  return 'баллов';
 }
 
 function setStatus(message) {
