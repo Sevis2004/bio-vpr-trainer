@@ -337,13 +337,7 @@
       }
 
       .task-part[data-task-id="7.2"] .media-figure {
-        flex-basis: 180px;
-        max-width: 180px;
-      }
-
-      .task-part[data-task-id="7.2"] .media-figure img {
-        max-height: 170px;
-        object-fit: contain;
+        flex: 0 1 auto;
       }
 
       .task-card[data-task-no="9"] .task-group-media .media-figure {
@@ -516,14 +510,22 @@
       }
 
       .image-dnd-layout {
-        grid-template-columns: minmax(220px, 0.78fr) minmax(130px, 180px);
-        gap: 8px;
+        grid-template-columns: minmax(220px, max-content) minmax(130px, 180px);
+        gap: 4px;
         align-items: center;
         justify-content: center;
       }
 
       .image-dnd-layout .image-dnd-media {
         justify-self: end;
+      }
+
+      .task-part[data-task-id="4.1"] .media-figure {
+        width: min(100%, 420px);
+      }
+
+      .task-part[data-task-id="4.1"] .media-figure img {
+        width: min(100%, 220px);
       }
 
       .image-dnd-layout .dnd-controls {
@@ -535,11 +537,38 @@
         align-self: stretch;
         align-content: space-around;
         gap: 18px;
-        padding-left: 22px;
+        padding-left: 14px;
       }
 
       .image-dnd-layout .dnd-slot {
         position: relative;
+      }
+
+      .task-part[data-task-id="4.1"] .dnd-slots {
+        position: relative;
+        width: 172px;
+        min-height: 282px;
+        align-self: center;
+        padding-left: 12px;
+      }
+
+      .task-part[data-task-id="4.1"] .dnd-slot {
+        position: absolute;
+        right: 0;
+        width: 150px;
+        min-height: 64px;
+      }
+
+      .task-part[data-task-id="4.1"] .dnd-slot:nth-child(1) {
+        top: 2%;
+      }
+
+      .task-part[data-task-id="4.1"] .dnd-slot:nth-child(2) {
+        top: 39%;
+      }
+
+      .task-part[data-task-id="4.1"] .dnd-slot:nth-child(3) {
+        top: 58%;
       }
 
       .image-dnd-layout .dnd-slot::before {
@@ -812,6 +841,23 @@
         .image-dnd-layout .dnd-slots {
           max-width: 260px;
           margin: 0 auto;
+        }
+
+        .task-part[data-task-id="4.1"] .dnd-slots {
+          display: grid;
+          position: static;
+          width: min(100%, 260px);
+          min-height: 0;
+          gap: 12px;
+          padding-left: 0;
+        }
+
+        .task-part[data-task-id="4.1"] .dnd-slot {
+          position: relative;
+          right: auto;
+          width: auto;
+          min-height: 64px;
+          top: auto;
         }
       }
     </style>

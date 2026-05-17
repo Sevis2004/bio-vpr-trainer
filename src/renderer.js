@@ -404,7 +404,7 @@ function renderDropdownGroup(task, body, onChange) {
       ${item.helpText ? `<p class="task-description">${escapeHtml(item.helpText)}</p>` : ''}
       ${item.strictHint ? `<p class="task-description">${escapeHtml(item.strictHint)}</p>` : ''}
       <select class="task-select" name="${escapeAttribute(item.id)}">
-        <option value="">${escapeHtml(getPlaceholder(task))}</option>
+        <option value="">${escapeHtml(getPlaceholder(item, task))}</option>
         ${getDropdownOptions(task, item)
           .map((option) => `<option value="${escapeAttribute(option.id)}">${escapeHtml(option.label)}</option>`)
           .join('')}
@@ -573,8 +573,27 @@ function getDropdownOptions(task, item) {
   return item.options ?? task.optionsBySlot?.[item.id] ?? task.options ?? [];
 }
 
-function getPlaceholder(task) {
-  return task.placeholder ?? 'Выберите ответ';
+function getPlaceholder(target, parentTask = null) {
+  const strictSource = isStrictSelect(target) ? target : isStrictSelect(parentTask) ? parentTask : null;
+  if (strictSource) {
+    return getStrictPlaceholder(strictSource, parentTask);
+  }
+
+  return target?.neutralPlaceholder ?? parentTask?.neutralPlaceholder ?? 'Выберите ответ';
+}
+
+function getStrictPlaceholder(strictSource, parentTask) {
+  if (strictSource.placeholder) return strictSource.placeholder;
+  if (isStrictPlaceholder(parentTask?.placeholder)) return parentTask.placeholder;
+  return '— сначала подумай сам, затем выбери —';
+}
+
+function isStrictSelect(item) {
+  return Boolean(item?.strictHint || item?.strictMode);
+}
+
+function isStrictPlaceholder(placeholder) {
+  return typeof placeholder === 'string' && placeholder.includes('сначала подумай сам');
 }
 
 function statusClass(status) {
