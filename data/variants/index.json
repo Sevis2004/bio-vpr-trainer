@@ -3,5 +3,10 @@
     "id": "bio6_variant_1",
     "title": "ВПР биология 6 класс — Вариант 1",
     "file": "data/variants/bio6_variant_1.json"
+  },
+  {
+    "id": "bio6_k3_variant_1",
+    "title": "Комплект 3 — Вариант 1",
+    "file": "data/variants/bio6_k3_variant_1.json"
   }
 ]
